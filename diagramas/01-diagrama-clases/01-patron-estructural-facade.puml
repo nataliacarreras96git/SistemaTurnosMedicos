@@ -1,0 +1,62 @@
+@startuml 01-patron-estructural-facade
+
+title Patrón Estructural Facade - Gestión de Turnos
+
+
+class Secretaria {
+    -nombre: String
+    
+    +gestionarTurno()
+}
+
+
+class GestionTurnosFacade {
+
+    +crearTurno(paciente, medico, fecha)
+    +cancelarTurno(turno)
+}
+
+
+class Agenda {
+
+    +verificarDisponibilidad()
+}
+
+
+class Turno {
+
+    -fecha: Date
+    -estado: String
+
+}
+
+
+class Paciente {
+
+    -nombre: String
+}
+
+
+class Medico {
+
+    -nombre: String
+}
+
+
+class Notificacion {
+
+    +enviarMensaje()
+}
+
+
+Secretaria --> GestionTurnosFacade
+
+GestionTurnosFacade --> Agenda
+GestionTurnosFacade --> Turno
+GestionTurnosFacade --> Notificacion
+
+Turno --> Paciente
+Turno --> Medico
+
+
+@enduml

@@ -5,6 +5,7 @@ title Patrón Estructural Facade - Gestión de Turnos
 
 class Secretaria {
     -nombre: String
+    -legajo: String
     
     +gestionarTurno()
 }
@@ -18,6 +19,7 @@ class GestionTurnosFacade {
 
 
 class Agenda {
+    - turnos: List<Turno>
 
     +verificarDisponibilidad()
 }

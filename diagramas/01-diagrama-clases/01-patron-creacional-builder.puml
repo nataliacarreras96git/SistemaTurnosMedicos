@@ -18,7 +18,6 @@ enum TurnoEstado {
 
 ' Clase Turno (Product)
 class Turno {
-  - id: String
   - fechaHoraProgramada: DateTime
   - paciente: Paciente
   - medico: Medico
@@ -31,8 +30,8 @@ class Turno {
   __
   **Métodos de negocio:**
   + cambiarEstado(nuevoEstado): void
-  + reprogramar(nuevaFechaHora): void
-  + cancelar(motivo, usuarioId): void
+  + reprogramarTurno(nuevaFechaHora): void
+  + cancelarTurno(motivo, usuarioId): void
   + registrarLlegada(horaReal): void
   __
   **Getters:**
@@ -49,7 +48,6 @@ class Turno {
 
 ' Clase Builder (clase interna estática)
 class "Turno.Builder" as Builder {
-  - id: String
   - fechaHoraProgramada: DateTime
   - paciente: Paciente
   - medico: Medico
@@ -76,7 +74,7 @@ class "Turno.Builder" as Builder {
 
 ' Clases colaboradoras
 class Paciente {
-  - historiaClinicaId: String
+  - historiaClinica: String
   + solicitarTurno(tipo): void
   + confirmarTurno(turnoId): boolean
   + recibirNotificacion(mensaje): void
@@ -90,7 +88,6 @@ class Medico {
 }
 
 class Agenda {
-  - id: String
   - turnos: List<Turno>
   + crearTurno(builder: Builder): Turno
   + verificarDisponibilidad(medicoId, fecha, hora): boolean

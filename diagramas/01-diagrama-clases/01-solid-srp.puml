@@ -6,7 +6,6 @@ skinparam monochrome false
 
 ' Clase Turno - Responsabilidad: ciclo de vida del turno
 class Turno {
-  - id: String
   - fechaHoraProgramada: DateTime
   - paciente: Paciente
   - medico: Medico
@@ -32,7 +31,6 @@ class ServicioAuditoria {
 
 ' Clase Agenda - Responsabilidad: coordinar creación de turnos
 class Agenda {
-  - id: String
   - medico: Medico
   - turnos: List<Turno>
   + crearTurno(builder: Turno.Builder): Turno

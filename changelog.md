@@ -20,6 +20,8 @@
 
 - [fix/coordinador-devops.md] Implementación de ia/segundo-parcial/coordinador-devops.md, pasada por alto. PR: [#149](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/149) - @britezacostaalexis-pixel(Coordinador y Devops)
 
+- [fix/add-docs-ia-patron-builder] Agregada documentación del proceso IA para patrón Builder y principios SOLID (`ia/segundo-parcial/especialista-patron-creacional.md`). PR: [#150](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/150) - @nachonervi-design (Especialista en Patrones Creacionales)
+
 
 
 ## [Released - Actividad Obligatoria N°4] - 2026-06-18

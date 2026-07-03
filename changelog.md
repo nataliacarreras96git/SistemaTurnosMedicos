@@ -6,6 +6,9 @@
 
 ### Added
 
+- [feature/coord-devops-update-docs] Se aplicaron correcciónes y actuaizaciones para que  Sistema de Turnos Médicos pueda mejorar el rendimiento. PR: [#147](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/147) -@britezacostaalexis-pixel(Coordinador y Devops)
+
+
 - [feature/esp-patron-estructural-facade] Se aplicó el patrón facade al Sistema de Turnos Médicos para mejorar el rendimiento. PR: [#145](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/145) - @lautarochavez14 (Especialista en Patrón de diseño Estructural)
 
 

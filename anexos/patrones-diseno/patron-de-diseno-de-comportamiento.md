@@ -1,6 +1,6 @@
-# Patrones de Diseño de Comportamiento y su Relación con los Principios SOLID
+# Anexo - Aplicación de Patrón de Diseño de Comportamiento - Observer
 
-## Patrones de Comportamiento y su Relación con SOLID
+## Patrones de Diseño de Comportamiento y su Relación con SOLID
 
 En la Programación Orientada a Objetos, los **patrones de comportamiento** representan soluciones probadas y documentadas para problemas recurrentes relacionados con la interacción, comunicación y distribución de responsabilidades entre objetos. Su propósito fundamental es definir cómo los objetos colaboran entre sí, asignando responsabilidades de forma clara y mantenible.
 
@@ -30,7 +30,7 @@ En el **Sistema de Turnos Médicos**, la aplicación del patrón Observer demues
 
 ---
 
-## Propósito y Tipo del Patrón Seleccionado
+## Propósito y Tipo del Patrón
 
 ### Propósito
 
@@ -57,7 +57,7 @@ El **patrón Observer** establece una relación de **dependencia uno-a-muchos** 
 
 ---
 
-## Motivación Detallada: Problema y Solución
+## Motivación
 
 ### El Problema Original
 
@@ -142,13 +142,13 @@ El patrón Observer **desacoplada completamente** la responsabilidad de notifica
 
 ---
 
-## Estructura de Clases con Diagrama UML
+## Estructura de Clases
 
 ![Diagrama de Clases del Patrón Observer](../../diagramas/01-diagrama-clases/01-patron-comportamiento-observer.png)
 
 ---
 
-## Justificación Técnica de la Solución Propuesta
+## Justificación Técnica de la Estructura de Clases
 
 ### 1. Desacoplamiento mediante Abstracciones (DIP)
 

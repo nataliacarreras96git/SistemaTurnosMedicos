@@ -102,6 +102,7 @@ La implementación del patrón Facade mejora la arquitectura del sistema debido 
 
 La solución respeta el principio **SRP (Single Responsibility Principle)** porque la clase Facade tiene como responsabilidad coordinar operaciones relacionadas con turnos, mientras que cada subsistema mantiene sus propias responsabilidades.
 
-También favorece el principio **DIP (Dependency Inversion Principle)** porque los componentes externos dependen de una interfaz simplificada y no de múltiples implementaciones internas.
+- Facade reduce el acoplamiento entre clientes y subsistemas al ofrecer una interfaz única.
+- Para favorecer DIP en la implementación, la fachada debería depender de abstracciones (interfaces) en lugar de clases concretas.
 
 Por estos motivos, el patrón Facade resulta adecuado para mejorar la organización, mantenimiento y evolución del sistema de turnos médicos.

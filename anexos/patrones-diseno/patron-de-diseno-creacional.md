@@ -1,11 +1,10 @@
-# Patrón de Diseño Creacional: Builder aplicado a SistemaTurnosMedicos
+# Anexo - Aplicación de Patrón de Diseño Creacional - Builder
 
-**Autor:** @nachonervi-design  
-**Rol:** Especialista en Patrones Creacionales  
-**Fecha:** Junio 2026  
-**Asignatura:** Diseño Orientado a Objetos - Segundo Parcial
+## Patrones de Diseño Creacionales y su Relación con SOLID
 
----
+Los patrones de diseño creacionales son soluciones estandarizadas a problemas comunes relacionados con la creación de objetos. En lugar de instanciar objetos directamente de forma rígida (usando directamente el operador new), estos patrones abstraen el proceso de clonación o instanciación, haciendo que el sistema sea más flexible, reutilizable y desacoplado. 
+
+Los patrones creacionales son las recetas arquitectónicas que te permiten aplicar esos principios específicamente cuando necesitas dar vida a nuevos objetos en tu sistema.
 
 ## 1. Introducción al Patrón Builder
 
@@ -39,8 +38,7 @@ Revisando el diagrama de clases final (`06-clases-diagrama-final.puml`) y la tar
 - `paciente: Paciente` - Paciente asignado
 - `medico: Medico` - Médico que atenderá
 
-**Atributos opcionales (7):**
-- `id: String` - Identificador único (puede generarse automáticamente)
+**Atributos opcionales (6):**
 - `estado: TurnoEstado` - Estado del turno (por defecto: PENDIENTE)
 - `sobreturno: boolean` - Indica si es sobreturno (por defecto: false)
 - `horaRealLlegada: DateTime` - Solo se completa al registrar llegada
@@ -50,12 +48,6 @@ Revisando el diagrama de clases final (`06-clases-diagrama-final.puml`) y la tar
 
 ### 2.2 Problema del Constructor Actual
 
-El constructor actual de `Turno` tiene esta firma:
-
-```java
-public Turno(DateTime fechaHora, Paciente paciente, Medico medico, boolean sobreturno)
-```
-
 **Problemas detectados:**
 
 1. **Parámetros posicionales confusos:** Al tener 4 parámetros del mismo tipo base, es fácil equivocarse de orden
@@ -63,16 +55,6 @@ public Turno(DateTime fechaHora, Paciente paciente, Medico medico, boolean sobre
 3. **Valores por defecto implícitos:** El estado siempre inicia en PENDIENTE, pero no es evidente desde la llamada
 4. **Dificultad para validar:** La validación de reglas de negocio (ej: sobreturno solo si médico autoriza) se mezcla con la construcción
 5. **Código cliente poco legible:**
-
-```java
-// Código actual - difícil de leer y mantener
-Turno turno = new Turno(
-    "2026-06-30 10:00",  // ¿qué es esto?
-    paciente,             // ¿quién?
-    medico,               // ¿quién?
-    false                 // ¿qué significa false?
-);
-```
 
 ### 2.3 Escenarios de Construcción Diversos
 
@@ -91,9 +73,9 @@ En el SistemaTurnosMedicos, los turnos se crean en diferentes contextos:
 
 ## 3. Solución Propuesta: Builder Pattern para `Turno`
 
-### 3.1 Diagrama de Clases del Patrón
+### 3.1 Estructura de Clases
 
-[Diagrama de Clases - Patrón Builder aplicado a Turno](../../diagramas/01-diagrama-clases/01-patron-creacional-builder.png)
+![Diagrama de Clases - Patrón Builder aplicado a Turno](../../diagramas/01-diagrama-clases/01-patron-creacional-builder.png)
 
 ### 3.2 Descripción de las Clases Involucradas
 
@@ -116,7 +98,6 @@ Clase estática interna de `Turno` que:
 ```text
 CLASE Turno
     // Atributos privados (Product)
-    - id: String
     - fechaHoraProgramada: DateTime
     - paciente: Paciente
     - medico: Medico
@@ -129,7 +110,6 @@ CLASE Turno
 
     // Constructor PRIVADO (solo el Builder puede usarlo)
     PRIVADO Turno(builder: Builder)
-        this.id = builder.id
         this.fechaHoraProgramada = builder.fechaHoraProgramada
         this.paciente = builder.paciente
         this.medico = builder.medico
@@ -142,7 +122,6 @@ CLASE Turno
     FIN
 
     // Getters
-    PÚBLICO getId(): String
     PÚBLICO getFechaHoraProgramada(): DateTime
     PÚBLICO getPaciente(): Paciente
     PÚBLICO getMedico(): Medico
@@ -158,7 +137,6 @@ CLASE Turno
 
 CLASE INTERNA Turno.Builder
     // Atributos del Builder (los mismos que Turno)
-    - id: String
     - fechaHoraProgramada: DateTime
     - paciente: Paciente
     - medico: Medico
@@ -174,7 +152,6 @@ CLASE INTERNA Turno.Builder
         this.fechaHoraProgramada = fechaHora
         this.paciente = paciente
         this.medico = medico
-        this.id = generarIdUnico()
     FIN
 
     // Métodos fluentes para atributos opcionales
@@ -392,38 +369,13 @@ En nuestro caso, `Turno` tiene **10 atributos** (3 obligatorios + 7 opcionales),
 
 ---
 
-## 7. Relación con Otros Patrones
-
-### 7.1 Builder + Factory Method
-
-Se pueden combinar para crear una **Factory** que use Builder internamente:
-
-```text
-CLASE TurnoFactory
-    PÚBLICO estático crearTurnoRegular(fechaHora, paciente, medico): Turno
-        RETORNAR new Turno.Builder(fechaHora, paciente, medico)
-            .conEstado(TurnoEstado.PENDIENTE)
-            .build()
-    FIN
-    
-    PÚBLICO estático crearSobreturno(fechaHora, paciente, medico): Turno
-        RETORNAR new Turno.Builder(fechaHora, paciente, medico)
-            .conSobreturno(true)
-            .conEstado(TurnoEstado.CONFIRMADO)
-            .build()
-    FIN
-FIN
-```
-
-### 7.2 Builder + State
+### 7. Builder + State
 
 El patrón Builder se integra naturalmente con el patrón **State** (que podríamos aplicar en el futuro para gestionar los estados del turno). El Builder establece el estado inicial, y el patrón State gestiona las transiciones.
 
 ---
 
-## 8. Conclusiones
-
-### 8.1 Resumen de la Propuesta
+### 8. Resumen de la Propuesta
 
 El patrón **Builder** aplicado a la clase `Turno` de SistemaTurnosMedicos:
 
@@ -434,11 +386,11 @@ El patrón **Builder** aplicado a la clase `Turno` de SistemaTurnosMedicos:
 ✅ Cumple con los principios SOLID  
 ✅ Es escalable para futuros cambios en la estructura de `Turno`
 
-### 8.2 Recomendación Final
+### 8.1 Recomendación Final
 
 Se **recomienda fuertemente** implementar el patrón Builder para la clase `Turno` en la próxima iteración del sistema. Los beneficios en mantenibilidad, legibilidad y reducción de errores superan ampliamente el pequeño overhead de implementación.
 
-### 8.3 Próximos Pasos
+### 8.2 Próximos Pasos
 
 1. ✅ **Implementar** la clase `Turno.Builder` en el código fuente
 2. ✅ **Refactorizar** las llamadas existentes a `new Turno(...)` para usar el Builder
@@ -448,14 +400,4 @@ Se **recomienda fuertemente** implementar el patrón Builder para la clase `Turn
 
 ---
 
-## 9. Referencias Bibliográficas
 
-- **Gamma, E., Helm, R., Johnson, R., Vlissides, J.** (1994). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley.
-- **Bloch, J.** (2018). *Effective Java* (3rd Edition). Capítulo 2: "Creating and Destroying Objects" - Item 2: "Consider a builder when faced with many constructor parameters".
-- **Freeman, E., Robson, E., Bates, B., Sierra, K.** (2004). *Head First Design Patterns*. O'Reilly Media.
-
----
-
-**Documento generado por:** @nachonervi-design  
-**Rol:** Especialista en Patrones Creacionales  
-**Repositorio:** [SistemaTurnosMedicos](https://github.com/eternalnight04/SistemaTurnosMedicos)

@@ -1,6 +1,6 @@
-# Patrón de Diseño Estructural - Facade
+# Anexo - Aplicación de Patrón de Diseño Estructural - Facade
 
-## 1. Introducción a los patrones estructurales y su relación con SOLID
+## Patrones de Diseño Estructurales y su Relación con SOLID
 
 Los patrones de diseño estructurales son soluciones reutilizables que permiten organizar las relaciones entre clases y objetos dentro de un sistema. Su objetivo principal es mejorar la flexibilidad, mantenibilidad y escalabilidad del software, simplificando la comunicación entre componentes.
 
@@ -16,15 +16,11 @@ La aplicación de patrones estructurales permite construir sistemas más organiz
 
 ---
 
-# 2. Patrón seleccionado: Facade
-
-## Propósito
+## Propósito y Tipo del Patrón
 
 El patrón **Facade** pertenece a la categoría de patrones estructurales y tiene como objetivo proporcionar una interfaz simplificada para interactuar con un conjunto complejo de clases o subsistemas.
 
 Facade oculta la complejidad interna del sistema y permite que los clientes accedan a funcionalidades mediante un único punto de entrada.
-
-## Tipo de patrón
 
 - **Categoría:** Patrón estructural.
 - **Intención:** Simplificar la interacción entre componentes complejos.
@@ -32,7 +28,7 @@ Facade oculta la complejidad interna del sistema y permite que los clientes acce
 
 ---
 
-# 3. Motivación del problema identificado
+## Motivación
 
 En el sistema de gestión de turnos médicos existen diferentes componentes involucrados en la administración de turnos.
 
@@ -50,7 +46,7 @@ Por este motivo se identifica la necesidad de crear una interfaz que simplifique
 
 ---
 
-# 4. Solución propuesta utilizando Facade
+### Solución propuesta utilizando Facade
 
 Para resolver el problema se propone implementar la clase:
 
@@ -74,7 +70,7 @@ De esta manera, las clases externas no necesitan conocer la lógica interna de c
 
 ---
 
-# 5. Estructura de clases con diagrama UML
+# 5. Estructura de Clases
 
 El diseño propuesto se representa mediante el siguiente diagrama:
 
@@ -90,7 +86,7 @@ Esta clase funciona como punto único de acceso para las operaciones relacionada
 
 ---
 
-# 6. Justificación técnica de la solución propuesta
+# 6. Justificación Técnica de la Estructura de Clases
 
 La implementación del patrón Facade mejora la arquitectura del sistema debido a que:
 

@@ -1,63 +1,68 @@
-@startuml Patrón Observer en Sistema de Turnos Médicos
+@startuml 01-patron-comportamiento-observer
 
 ' ==================== CLASES ABSTRACTAS Y INTERFACES ====================
 
 interface iNotificacion {
-    + actualizar(sujeto: Sujeto): void
+    + actualizar(): void
 }
 
 abstract class Sujeto {
     # notificadores: List<iNotificacion>
     --
-    + suscribir(notificacion: iNotificacion): void
-    + desuscribir(notificacion: iNotificacion): void
+    + suscribir(): void
+    + desuscribir(): void
     + notificar(): void
 }
 
 abstract class NotificacionMedio {
+    - medio: String
+    - tipo: String
+    - mensaje : String
     --
-    + enviarNotificacion(sujeto: Sujeto, sujeto2: Sujeto): void
-    + actualizar(sujeto: Sujeto): void
+    + enviarNotificacion(): void
+    + actualizar(): void
 }
 
 ' ==================== CLASES CONCRETAS ====================
 
 class Turno {
-    - id: String
     - fechaHora: DateTime
     - paciente: Paciente
     - medico: Medico
     - estado: TurnoEstado
     - sobreturno: boolean
     --
-    + Turno(fechaHora, paciente, medico)
-    + crearTurno(fechaHora, paciente, medico): void
-    + cambiarEstado(nuevoEstado: TurnoEstado): void
-    + reprogramar(nuevaFecha: DateTime): void
-    + cancelar(motivo: String): void
+    + crearTurno(): void
+    + cambiarEstado(): void
+    + reprogramarTurno(): void
+    + cancelarTurno(): void
 }
 
 class NotificacionEmail {
     - email: String
+    - tipo : String
+    - mensaje : String
     --
-    + NotificacionEmail(email: String)
-    + enviarNotificacion(sujeto: Sujeto, sujeto2: Sujeto): void
-    + actualizar(sujeto: Sujeto): void
+    + NotificacionEmail()
+    + enviarNotificacion(): void
+    + actualizar(): void
 }
 
 class NotificacionWhatsapp {
     - telefono: String
+    - tipo : String
+    - mensaje : String
     --
-    + NotificacionWhatsapp(telefono: String)
-    + enviarNotificacion(sujeto: Sujeto, sujeto2: Sujeto): void
-    + actualizar(sujeto: Sujeto): void
+    + NotificacionWhatsapp()
+    + enviarNotificacion(): void
+    + actualizar(): void
 }
 
 class Auditoria {
     - eventos: List<String>
     --
-    + guardarEvento(turno: Turno, cambio: String): void
-    + actualizar(sujeto: Sujeto): void
+    + guardarEvento(): void
+    + actualizar(): void
 }
 
 class Paciente {
@@ -65,17 +70,17 @@ class Paciente {
     - telefono: String
     - email : String
     --
-    + solicitarTurno(medico: Medico): void
-    + confirmarTurno(turno: Turno): void
-    + cancelarTurno(turno: Turno, motivo: String): void
+    + solicitarTurno(): void
+    + confirmarTurno(): void
+    + cancelarTurno(): void
 }
 
 class Medico {
     - especialidad: String
     - horarioDisponible: String
     --
-    + consultarAgenda(fecha: DateTime): void
-    + autorizarSobreturno(turno: Turno): void
+    + consultarAgenda(): void
+    + autorizarSobreturno(): void
 }
 
 ' ==================== RELACIONES DE HERENCIA ====================

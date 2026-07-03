@@ -22,7 +22,7 @@
 
 - [fix/add-docs-ia-patron-builder] Agregada documentación del proceso IA para patrón Builder y principios SOLID (`ia/segundo-parcial/especialista-patron-creacional.md`). PR: [#150](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/150) - @nachonervi-design (Especialista en Patrones Creacionales)
 
-- [fix/nachonervi-reescribir-docs-creacional] Reescrito completamente el anexo de patrón Builder con formato académico y estructura obligatoria para el Segundo Parcial, incluyendo introducción teórica, aplicación en Turno, diagrama UML, ejemplos de pseudocódigo, relación con SOLID, alternativas evaluadas y referencias bibliográficas. Se resolvieron RCs relacionados con la eliminación de identificadores innecesarios, la aclaración de cardinalidad en el diagrama y la explicación de uso de las clases. PR: pendiente - @nachonervi-design (Especialista en Patrones Creacionales)
+- [fix/nachonervi-reescribir-docs-creacional] Se reescribió el anexo del patrón Builder con formato académico y estructura del parcial. PR: [#153](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/153) - @nachonervi-design (Especialista en Patrones Creacionales)
 
 ## [Released - Actividad Obligatoria N°4] - 2026-06-18
 

@@ -22,7 +22,15 @@
 
 - [fix/add-docs-ia-patron-builder] Agregada documentación del proceso IA para patrón Builder y principios SOLID (`ia/segundo-parcial/especialista-patron-creacional.md`). PR: [#150](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/150) - @nachonervi-design (Especialista en Patrones Creacionales)
 
+- [fix/comportamiento-observer-1] Eliminados IDs de patron de comportamiento, se agregaron atributos para NotificacionMedio y se corrigió un archivo md de comportamiento para ser fiel al formato de entrega. PR: [#151](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/151) - @eternalnight04 (Especialista en Patrón de Diseño de Comportamiento)
+
+- [fix/patrones-correcciones-1] Se eliminaron IDs, secciones del archivo de patrón creacional, se corrigieron índices y se aplicaron otras correcciones mínimas a los archivos md de patrón de diseño estructural y creacional. PR: [#152](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/152) - @eternalnight04 (Especialista en Patrón de Diseño de Comportamiento)
+
 - [fix/nachonervi-reescribir-docs-creacional] Se reescribió el anexo del patrón Builder con formato académico y estructura del parcial. PR: [#153](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/153) - @nachonervi-design (Especialista en Patrones Creacionales)
+
+- [fix/esp-patron-estructural-facade] Correcciones en diagrama estructural. PR: [#156](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/156) - @lautarochavez14 (Especialista en Patron de Diseño Estructural)
+
+
 
 ## [Released - Actividad Obligatoria N°4] - 2026-06-18
 

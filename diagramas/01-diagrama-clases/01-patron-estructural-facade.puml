@@ -12,11 +12,11 @@ enum TurnoEstado {
 }
 
 class Secretaria {
-    -secretariaId: String
+    -legajo: String
 
-    +solicitarTurno(pacienteId, tipo)
-    +cancelarTurno(turnoId, motivo): boolean
-    +reprogramarTurno(turnoId, nuevaFechaHora): boolean
+    +solicitarTurno(paciente, tipo)
+    +cancelarTurno(turno, motivo): boolean
+    +reprogramarTurno(turno, nuevaFechaHora): boolean
     +darAltaPaciente(datos): Paciente
     +consultarAgenda(medicoId, fecha)
 }
@@ -30,22 +30,20 @@ class GestionTurnosFacade {
 }
 
 class Agenda {
-    -id: String
     -medico: Medico
     -turnos: List<Turno>
 
-    +verificarDisponibilidad(medicoId, fecha, hora): boolean
-    +registrarDisponibilidad(medicoId, horario): void
+    +verificarDisponibilidad(medico, fecha, hora): boolean
+    +registrarDisponibilidad(medico, horario): void
     +crearTurno(fechaHora, paciente, medico, sobreturno): Turno
     +buscarTurno(turnoId): Turno
-    +accederAgendaDiaria(secretariaId, fecha)
-    +sugerirHorariosAlternativos(medicoId, fecha)
-    +registrarEnHistorial(turnoId, descripcion): void
+    +accederAgendaDiaria(legajo, fecha)
+    +sugerirHorariosAlternativos(medico, fecha)
+    +registrarEnHistorial(turno, descripcion): void
     +buscarPaciente(identificador): Paciente
 }
 
 class Turno {
-    -id: String
     -fechaHoraProgramada: DateTime
     -paciente: Paciente
     -medico: Medico
@@ -59,16 +57,18 @@ class Turno {
     +Turno(fechaHora, paciente, medico, sobreturno)
     +cambiarEstado(nuevoEstado): void
     +reprogramar(nuevaFechaHora): void
-    +cancelar(motivo, usuarioId): void
+    +cancelar(motivo, usuario): void
     +registrarLlegada(horaReal): void
 }
 
 class Paciente {
-    -historiaClinicaId: String
+    -dni: string
+    -domicilio: string
+    -telefono: string
 
     +solicitarTurno(tipo): void
-    +confirmarTurno(turnoId): boolean
-    +cancelarTurno(turnoId): boolean
+    +confirmarTurno(turno): boolean
+    +cancelarTurno(turno): boolean
     +recibirNotificacion(mensaje): void
 }
 
@@ -78,8 +78,8 @@ class Medico {
     -horarioDisponible
 
     +consultarAgenda(fecha)
-    +autorizarSobreturno(solicitudId): boolean
-    +registrarObservacion(turnoId, observacion): void
+    +autorizarSobreturno(solicitud): boolean
+    +registrarObservacion(turno, observacion): void
     +modificarDisponibilidad(nuevoHorario): void
 }
 

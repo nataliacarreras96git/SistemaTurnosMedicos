@@ -55,6 +55,8 @@
 
 - [fix/atributos-correcciones-1] Se corrigieron las relaciones de cardinalidad, se privatizaron los atributos y se eliminaron las iDs de todas las clases de los diagramas de clases. PR: [#140](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/140) - @eternalnight04 (Documentador y Coordinador)
 
+- [fix/esp-patron-estructural-facade] Correcciones en diagrama estructural  PR: [#156](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/156#issue-4807522599)
+  
 ## [Released - Actividad Obligatoria N°3] - 2026-05-17
 
 ### Added

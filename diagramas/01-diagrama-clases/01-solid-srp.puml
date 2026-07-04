@@ -6,7 +6,6 @@ skinparam monochrome false
 
 ' Clase Turno - Responsabilidad: ciclo de vida del turno
 class Turno {
-  - id: String
   - fechaHoraProgramada: DateTime
   - paciente: Paciente
   - medico: Medico
@@ -18,6 +17,11 @@ class Turno {
 
 ' Clase ServicioNotificaciones - Responsabilidad: enviar notificaciones
 class ServicioNotificaciones {
+  - tipoNotificacion: String
+  - plantilla: String
+  - fechaEnvio: DateTime
+  - estado: String
+  - destinatario: String
   + enviarNotificacionPaciente(paciente: Paciente, mensaje: String): void
   + enviarNotificacionMedico(medico: Medico, mensaje: String): void
   + enviarEmail(destinatario: String, mensaje: String): void
@@ -26,13 +30,17 @@ class ServicioNotificaciones {
 
 ' Clase ServicioAuditoria - Responsabilidad: registrar eventos
 class ServicioAuditoria {
+  - eventos: List<String>
+  - fechaRegistro: DateTime
+  - usuarioResponsable: String
+  - accionRealizada: String
+  - detalles: String
   + registrarEvento(turnoId: String, usuario: String, accion: String): void
   + consultarHistorial(turnoId: String): List<String>
 }
 
 ' Clase Agenda - Responsabilidad: coordinar creación de turnos
 class Agenda {
-  - id: String
   - medico: Medico
   - turnos: List<Turno>
   + crearTurno(builder: Turno.Builder): Turno

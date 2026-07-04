@@ -1,461 +1,214 @@
-# Patrón de Diseño Creacional: Builder aplicado a SistemaTurnosMedicos
+# Patrón de Diseño Creacional: Builder aplicado a Turno
 
-**Autor:** @nachonervi-design  
-**Rol:** Especialista en Patrones Creacionales  
-**Fecha:** Junio 2026  
-**Asignatura:** Diseño Orientado a Objetos - Segundo Parcial
+Este documento presenta el patrón Builder como solución de diseño para la clase Turno dentro del proyecto SistemaTurnosMedicos. La propuesta busca mostrar cómo un patrón creacional puede mejorar la claridad del código, reducir la complejidad de la construcción de objetos y mantener coherencia con los principios SOLID, con especial atención a la legibilidad y a la organización de las reglas de negocio.
 
----
-
-## 1. Introducción al Patrón Builder
+## 1. Introducción al Patrón
 
 ### 1.1 Definición
 
-El patrón **Builder** es un patrón de diseño **creacional** que permite construir objetos complejos paso a paso. Separa la construcción de un objeto de su representación, de modo que el mismo proceso de construcción puede crear diferentes representaciones.
+El patrón Builder pertenece a la familia de patrones creacionales descrita por Gamma et al. en Design Patterns y su propósito es separar la construcción de un objeto complejo de su representación final. En lugar de exigir un constructor con numerosos parámetros o múltiples sobrecargas, Builder permite construir el producto paso a paso mediante una interfaz fluida y legible.
 
-**Categoría:** Creacional (se enfoca en la creación de objetos)
+Este enfoque resulta especialmente útil cuando la creación de un objeto exige combinar datos obligatorios con atributos opcionales, validaciones de negocio o configuraciones que dependen del contexto. En la práctica, el patrón mejora la claridad del código cliente y facilita el mantenimiento del sistema a medida que crecen las reglas de construcción.
 
-**Problema que resuelve:** Evita el "anti-patrón" del constructor telescópico (constructores con muchos parámetros, muchos de ellos opcionales), que hace el código difícil de leer, mantener y propenso a errores.
+### 1.2 Problema que resuelve
 
-### 1.2 Estructura General del Patrón
+El problema central del patrón Builder es el llamado constructor telescópico, que aparece cuando una clase requiere muchos atributos y varios de ellos son opcionales. En esos casos, los constructores tradicionales se vuelven difíciles de leer, propensos a errores de orden y poco expresivos para el desarrollador que consume la API.
 
-| Componente | Responsabilidad |
-|------------|-----------------|
-| **Product** | El objeto complejo que se construye (en nuestro caso, `Turno`) |
-| **Builder** | Clase que define los pasos para construir el producto |
-| **Concrete Builder** | Implementación concreta del Builder |
-| **Director** (opcional) | Orquesta la construcción siguiendo un orden específico |
+En el dominio de SistemaTurnosMedicos, este problema se manifiesta con claridad en la clase Turno, porque su creación requiere combinar datos básicos del turno con información adicional que puede o no estar presente según el caso de uso. Builder evita este problema al exponer operaciones específicas y explícitas como conEstado, conSobreturno o conHistorialEvento.
 
----
+### 1.3 Cuándo aplicar
 
-## 2. Problema Identificado en SistemaTurnosMedicos
+El patrón Builder es una opción adecuada cuando:
 
-### 2.1 Análisis de la Clase `Turno` Actual
+- La clase tiene varios atributos y muchos de ellos son opcionales.
+- La construcción del objeto requiere validaciones o reglas de negocio antes de crear la instancia.
+- Se desea una API de creación más legible y expresiva que un constructor convencional.
+- Se prevé que el proceso de construcción evolucionará con nuevas opciones sin modificar las llamadas existentes.
 
-Revisando el diagrama de clases final (`06-clases-diagrama-final.puml`) y la tarjeta CRC de `Turno`, identificamos que la clase tiene:
+## 2. Aplicación en SistemaTurnosMedicos
 
-**Atributos obligatorios (3):**
-- `fechaHoraProgramada: DateTime` - Fecha y hora del turno
-- `paciente: Paciente` - Paciente asignado
-- `medico: Medico` - Médico que atenderá
+### 2.1 Contexto del dominio
 
-**Atributos opcionales (7):**
-- `id: String` - Identificador único (puede generarse automáticamente)
-- `estado: TurnoEstado` - Estado del turno (por defecto: PENDIENTE)
-- `sobreturno: boolean` - Indica si es sobreturno (por defecto: false)
-- `horaRealLlegada: DateTime` - Solo se completa al registrar llegada
-- `presente: boolean` - Solo se completa al registrar llegada
-- `diferenciaMinutos: int` - Solo se calcula al registrar llegada
-- `historial: List<String>` - Lista de eventos del turno
+En el sistema, la clase Turno representa un objeto complejo del dominio. Su construcción no depende solo de los datos mínimos del turno, sino también de información secundaria que varía según el contexto: estado inicial, autorización de sobreturno, llegada del paciente, presencia del mismo o historial de eventos.
 
-### 2.2 Problema del Constructor Actual
+En el diseño propuesto, Turno concentra atributos relevantes de construcción en un único objeto. De ellos, tres son obligatorios para iniciar la creación del turno y los restantes se incorporan de forma incremental según la operación que se esté ejecutando. Esta combinación justifica el uso de Builder, ya que el proceso de creación se vuelve más claro y controlado que un constructor tradicional.
 
-El constructor actual de `Turno` tiene esta firma:
+Los atributos relevantes del dominio pueden agruparse de la siguiente manera:
 
-```java
-public Turno(DateTime fechaHora, Paciente paciente, Medico medico, boolean sobreturno)
-```
+- Atributos obligatorios: fechaHoraProgramada, paciente y medico.
+- Atributos opcionales: estado, sobreturno, horaRealLlegada, presente, diferenciaMinutos e historial.
+- Atributos derivados o de estado: algunos valores no se completan al momento de creación, sino en fases posteriores del ciclo de vida del turno.
 
-**Problemas detectados:**
+Esta distribución refuerza la idea de que la construcción debe ser flexible y expresiva, en lugar de depender de un único constructor sobrecargado.
 
-1. **Parámetros posicionales confusos:** Al tener 4 parámetros del mismo tipo base, es fácil equivocarse de orden
-2. **Falta de flexibilidad:** No permite construir turnos con diferentes combinaciones de atributos opcionales
-3. **Valores por defecto implícitos:** El estado siempre inicia en PENDIENTE, pero no es evidente desde la llamada
-4. **Dificultad para validar:** La validación de reglas de negocio (ej: sobreturno solo si médico autoriza) se mezcla con la construcción
-5. **Código cliente poco legible:**
+### 2.2 Clases involucradas
 
-```java
-// Código actual - difícil de leer y mantener
-Turno turno = new Turno(
-    "2026-06-30 10:00",  // ¿qué es esto?
-    paciente,             // ¿quién?
-    medico,               // ¿quién?
-    false                 // ¿qué significa false?
-);
-```
+| Clase | Rol en el patrón | Responsabilidad |
+|-------|------------------|-----------------|
+| Turno | Product | Objeto complejo a construir y encapsular en el dominio |
+| Turno.Builder | Builder | Construye Turno paso a paso mediante métodos fluentes |
+| Agenda | Director (opcional) | Coordina la creación del turno a partir del builder |
+| Secretaria | Client | Solicita la creación del turno y aporta los datos iniciales |
 
-### 2.3 Escenarios de Construcción Diversos
+### 2.3 Diagrama UML
 
-En el SistemaTurnosMedicos, los turnos se crean en diferentes contextos:
+![Diagrama de Clases - Patrón Builder](../../diagramas/01-diagrama-clases/01-patron-creacional-builder.png)
 
-| Escenario | Caso de Uso | Atributos Requeridos |
-|-----------|-------------|----------------------|
-| Turno regular | CU01 - Crear Turno | fechaHora, paciente, médico, estado=PENDIENTE |
-| Sobreturno | CU04 - Autorizar Sobreturno | fechaHora, paciente, médico, sobreturno=true |
-| Turno reprogramado | CU02 - Reprogramar Turno | Todos los anteriores + historial actualizado |
-| Turno con llegada registrada | CU05 - Registrar Llegada | Todos + horaRealLlegada, presente, diferenciaMinutos |
+**Explicación del diagrama:**
+- La clase Turno representa el producto final del patrón y contiene la lógica de negocio asociada al ciclo de vida del turno.
+- Su constructor es privado, lo que impide que otras clases creen instancias directamente sin pasar por la validación del builder.
+- La clase interna Turno.Builder expone un conjunto de métodos fluentes que permiten configurar los atributos opcionales antes de construir el objeto.
+- Agenda utiliza el builder como punto de entrada para crear turnos de manera controlada y coherente con el dominio.
+- La relación entre Agenda y Builder permite separar la coordinación del proceso de construcción del objeto mismo, lo que mejora la cohesión del diseño.
 
-**Conclusión:** El patrón Builder es **ideal** para resolver esta complejidad de construcción.
+### 2.4 Justificación del diseño
 
----
+La elección de Builder se sustenta en la necesidad de mantener un equilibrio entre expresividad y control. Mientras que un constructor tradicional obliga a pasar todos los datos en un orden fijo y poco claro, el builder permite leer el proceso de construcción en términos del dominio. En este sentido, la solución no solo mejora la sintaxis del código, sino que también comunica mejor la intención del negocio al lector.
 
-## 3. Solución Propuesta: Builder Pattern para `Turno`
+## 3. Implementación
 
-### 3.1 Diagrama de Clases del Patrón
+### 3.1 Estructura del código
 
-[Diagrama de Clases - Patrón Builder aplicado a Turno](../../diagramas/01-diagrama-clases/01-patron-creacional-builder.png)
-
-### 3.2 Descripción de las Clases Involucradas
-
-#### Clase `Turno` (Product)
-
-La clase `Turno` mantiene todos sus atributos pero:
-- Su constructor se vuelve **privado** (solo el Builder puede crear instancias)
-- Se agregan métodos **getter** para acceder a los atributos
-- Los métodos de negocio (`cambiarEstado`, `reprogramar`, `cancelar`, `registrarLlegada`) permanecen igual
-
-#### Clase `Turno.Builder` (Builder)
-
-Clase estática interna de `Turno` que:
-- Tiene los mismos atributos que `Turno` (pero públicos dentro del Builder)
-- Ofrece métodos fluentes (`conXxx()`) para establecer cada atributo
-- Tiene un método `build()` que valida y construye el objeto `Turno`
-
-### 3.3 Código del Patrón (Pseudocódigo)
-
-```text
+```pseudocode
 CLASE Turno
-    // Atributos privados (Product)
-    - id: String
+  ATRIBUTOS PRIVADOS:
     - fechaHoraProgramada: DateTime
     - paciente: Paciente
     - medico: Medico
     - estado: TurnoEstado
-    - sobreturno: boolean
+    - sobreturno: Boolean
     - horaRealLlegada: DateTime
-    - presente: boolean
-    - diferenciaMinutos: int
+    - presente: Boolean
+    - diferenciaMinutos: Integer
     - historial: List<String>
 
-    // Constructor PRIVADO (solo el Builder puede usarlo)
-    PRIVADO Turno(builder: Builder)
-        this.id = builder.id
-        this.fechaHoraProgramada = builder.fechaHoraProgramada
-        this.paciente = builder.paciente
-        this.medico = builder.medico
-        this.estado = builder.estado
-        this.sobreturno = builder.sobreturno
-        this.horaRealLlegada = builder.horaRealLlegada
-        this.presente = builder.presente
-        this.diferenciaMinutos = builder.diferenciaMinutos
-        this.historial = builder.historial
-    FIN
+  CONSTRUCTOR PRIVADO(builder: Builder)
+    // Asigna atributos desde builder
 
-    // Getters
-    PÚBLICO getId(): String
-    PÚBLICO getFechaHoraProgramada(): DateTime
-    PÚBLICO getPaciente(): Paciente
-    PÚBLICO getMedico(): Medico
-    PÚBLICO getEstado(): TurnoEstado
-    PÚBLICO esSobreturno(): boolean
-    
-    // Métodos de negocio (se mantienen igual)
-    PÚBLICO cambiarEstado(nuevoEstado: TurnoEstado): void
-    PÚBLICO reprogramar(nuevaFechaHora: DateTime): void
-    PÚBLICO cancelar(motivo: String, usuarioId: String): void
-    PÚBLICO registrarLlegada(horaReal: DateTime): void
+  CLASE INTERNA Builder
+    ATRIBUTOS PRIVADOS:
+      - fechaHoraProgramada: DateTime
+      - paciente: Paciente
+      - medico: Medico
+      - estado: TurnoEstado = PENDIENTE
+      - sobreturno: Boolean = false
+      - horaRealLlegada: DateTime = null
+      - presente: Boolean = false
+      - diferenciaMinutos: Integer = 0
+      - historial: List<String> = []
 
-
-CLASE INTERNA Turno.Builder
-    // Atributos del Builder (los mismos que Turno)
-    - id: String
-    - fechaHoraProgramada: DateTime
-    - paciente: Paciente
-    - medico: Medico
-    - estado: TurnoEstado = TurnoEstado.PENDIENTE
-    - sobreturno: boolean = false
-    - horaRealLlegada: DateTime = null
-    - presente: boolean = false
-    - diferenciaMinutos: int = 0
-    - historial: List<String> = nueva lista vacía
-
-    // Constructor del Builder con parámetros obligatorios
-    PÚBLICO Builder(fechaHora: DateTime, paciente: Paciente, medico: Medico)
-        this.fechaHoraProgramada = fechaHora
-        this.paciente = paciente
-        this.medico = medico
-        this.id = generarIdUnico()
-    FIN
-
-    // Métodos fluentes para atributos opcionales
-    PÚBLICO conEstado(estado: TurnoEstado): Builder
-        this.estado = estado
-        RETORNAR this
-    FIN
-
-    PÚBLICO conSobreturno(sobreturno: boolean): Builder
-        this.sobreturno = sobreturno
-        RETORNAR this
-    FIN
-
-    PÚBLICO conHoraLlegada(horaReal: DateTime): Builder
-        this.horaRealLlegada = horaReal
-        RETORNAR this
-    FIN
-
-    PÚBLICO conPresente(presente: boolean): Builder
-        this.presente = presente
-        RETORNAR this
-    FIN
-
-    PÚBLICO conHistorialEvento(evento: String): Builder
-        this.historial.agregar(evento)
-        RETORNAR this
-    FIN
-
-    // Método de construcción con validaciones
-    PÚBLICO build(): Turno
-        // Validaciones de negocio
-        SI fechaHoraProgramada ES nulo ENTONCES
-            LANZAR Excepcion("La fecha y hora son obligatorias")
-        FIN SI
-        
-        SI paciente ES nulo ENTONCES
-            LANZAR Excepcion("El paciente es obligatorio")
-        FIN SI
-        
-        SI medico ES nulo ENTONCES
-            LANZAR Excepcion("El médico es obligatorio")
-        FIN SI
-        
-        // Validación específica para sobreturnos
-        SI sobreturno == verdadero ENTONCES
-            SI NO medico.autorizarSobreturno(this.id) ENTONCES
-                LANZAR Excepcion("El médico no autorizó el sobreturno")
-            FIN SI
-        FIN SI
-        
-        // Construir y retornar el Turno
-        RETORNAR nuevo Turno(this)
-    FIN
+    MÉTODOS FLUENTES:
+      + conEstado(estado): Builder
+      + conSobreturno(sobreturno): Builder
+      + conHoraLlegada(horaReal): Builder
+      + conPresente(presente): Builder
+      + conHistorialEvento(evento): Builder
+      + build(): Turno
 ```
 
-### 3.4 Ejemplos de Uso
+El flujo de construcción sigue un orden deliberado: primero se definen los datos obligatorios, luego se incorporan las configuraciones opcionales y, por último, se invoca build(). Este diseño preserva la claridad semántica del código sin exponer al cliente los detalles internos del objeto resultante.
 
-#### Ejemplo 1: Turno Regular (CU01 - Crear Turno)
+### 3.2 Validaciones en build()
 
-```text
-// Código ANTES del Builder (difícil de leer)
-Turno turno = new Turno("2026-06-30 10:00", paciente, medico, false);
+Las validaciones se concentran en el método build() para garantizar que el objeto solo se cree si cumple con las reglas del dominio. Entre las principales validaciones se encuentran:
 
-// Código DESPUÉS del Builder (claro y mantenible)
-Turno turno = new Turno.Builder("2026-06-30 10:00", paciente, medico)
-    .conEstado(TurnoEstado.PENDIENTE)
-    .conHistorialEvento("Turno creado por Secretaria SEC-001")
-    .build();
+- La fecha y la hora programada deben estar presentes.
+- Paciente y médico deben ser referencias válidas y obligatorias.
+- El estado inicial debe ser consistente con la operación de creación.
+- Si se marca el turno como sobreturno, debe existir un contexto válido para esa autorización.
+- El historial puede inicializarse de forma vacía o completarse según la operación concreta.
+
+Este enfoque evita que el objeto quede en un estado parcial o inconsistente. Además, centraliza en un solo punto las reglas que, de otro modo, se dispersarían entre varios constructores o llamadas directas al operador new.
+
+### 3.3 Flujo de construcción
+
+El flujo típico de construcción puede describirse en tres etapas. Primero, el cliente define los datos obligatorios del turno. Luego, agrega las configuraciones opcionales que corresponden al caso concreto. Finalmente, invoca build(), proceso que valida el estado del objeto y lo retorna listo para su uso.
+
+Este orden facilita la trazabilidad del diseño y permite que el código cliente se mantenga comprensible incluso cuando el número de atributos crece.
+
+## 4. Ejemplos de uso en Casos de Uso
+
+### 4.1 CU01 - Crear Turno
+
+```pseudocode
+turno = new Turno.Builder(fechaHora, paciente, medico)
+  .conEstado(TurnoEstado.PENDIENTE)
+  .conHistorialEvento("Turno creado por Secretaria")
+  .build()
 ```
 
-#### Ejemplo 2: Sobreturno (CU04 - Autorizar Sobreturno)
+### 4.2 CU02 - Reprogramar Turno
 
-```text
-Turno sobreturno = new Turno.Builder("2026-06-30 15:00", pacienteUrgencia, medico)
-    .conSobreturno(true)
-    .conEstado(TurnoEstado.CONFIRMADO)
-    .conHistorialEvento("Sobreturno autorizado por Dr. Molina")
-    .build();
+```pseudocode
+turnoReprogramado = new Turno.Builder(nuevaFechaHora, paciente, medico)
+  .conEstado(TurnoEstado.REPROGRAMADO)
+  .conHistorialEvento("Turno original reprogramado")
+  .conHistorialEvento("Cambio solicitado por paciente")
+  .build()
 ```
 
-#### Ejemplo 3: Turno Reprogramado (CU02 - Reprogramar Turno)
+### 4.3 CU04 - Autorizar Sobreturno
 
-```text
-Turno turnoReprogramado = new Turno.Builder("2026-06-30 14:00", paciente, medico)
-    .conEstado(TurnoEstado.REPROGRAMADO)
-    .conHistorialEvento("Turno original: 2026-06-30 10:00")
-    .conHistorialEvento("Reprogramado por paciente")
-    .build();
+```pseudocode
+sobreturno = new Turno.Builder(fechaHora, pacienteUrgente, medico)
+  .conEstado(TurnoEstado.CONFIRMADO)
+  .conSobreturno(true)
+  .conHistorialEvento("Sobreturno autorizado")
+  .build()
 ```
 
-#### Ejemplo 4: Turno con Llegada Registrada (CU05 - Registrar Llegada)
+### 4.4 CU05 - Registrar Llegada
 
-```text
-// Primero se crea el turno
-Turno turno = new Turno.Builder("2026-06-30 10:00", paciente, medico)
-    .build();
+```pseudocode
+turno = new Turno.Builder(fechaHora, paciente, medico)
+  .build()
 
-// Luego se registra la llegada (modifica el turno existente)
-turno.registrarLlegada("2026-06-30 09:55");
-// Esto actualiza: horaRealLlegada, presente=true, diferenciaMinutos=-5
+turno.registrarLlegada(horaRealLlegada)
 ```
+
+En este caso, el builder se utiliza para crear una instancia inicial del turno, mientras que la operación de registrar llegada se encarga de completar los atributos de seguimiento que corresponden al estado posterior del turno.
+
+## 5. Ventajas y desventajas
+
+### 5.1 Ventajas
+
+- El código cliente es más legible y expresivo.
+- Las validaciones de negocio quedan centralizadas en build().
+- Se facilita la incorporación de atributos opcionales sin multiplicar constructores.
+- El diseño mejora la mantenibilidad del sistema en futuras modificaciones.
+
+### 5.2 Desventajas
+
+- Requiere una estructura adicional, como una clase interna o un builder separado.
+- Puede resultar excesivo si la clase tiene pocos atributos y la construcción es trivial.
+- Implica un pequeño costo de implementación inicial en comparación con un constructor simple.
+
+## 6. Relación con principios SOLID
+
+Desde una perspectiva académica, Builder no solo resuelve un problema de creación de objetos, sino que también refuerza la arquitectura del sistema al preservar el encapsulamiento y reducir el acoplamiento entre el cliente y la clase compleja. Esta separación entre construcción y uso favorece la evolución del diseño sin afectar de forma inmediata a las partes que ya dependen del objeto Turno.
+
+| Principio | Cómo lo cumple Builder |
+|-----------|------------------------|
+| SRP | Builder separa la construcción del objeto de la lógica de negocio del turno |
+| OCP | Se pueden agregar nuevos atributos opcionales sin modificar constructores ya existentes |
+| DIP | Agenda depende de la abstracción del builder para crear turnos, no de un constructor concreto |
+
+## 7. Alternativas evaluadas y descartadas
+
+| Patrón | Razón de descarte |
+|--------|-------------------|
+| Factory Method | No hay familias de objetos relacionadas que justifiquen una jerarquía de creación |
+| Singleton | Agenda ya es una entidad única por contexto, por lo que no requiere este patrón |
+| Prototype | No es un requisito del dominio clonar turnos existentes |
+
+## 8. Referencias
+
+- Gamma, E. et al. (1994). Design Patterns. Addison-Wesley.
+- Bloch, J. (2018). Effective Java (3ra ed.). Item 2.
+- Refactoring.Guru - Builder Pattern.
+
+<!-- RCs resueltos: RC28 (eliminar identificadores innecesarios), RC29 (indicar cardinalidad en el diagrama), RC32 (explicar cómo se utilizan las clases del diagrama en la justificación técnica), y ajuste de historial solicitado en RC3/RC4 de A4. -->
 
 ---
 
-## 4. Integración con el Sistema Existente
 
-### 4.1 Modificación de la Clase `Agenda`
-
-La clase `Agenda` es actualmente la responsable de crear turnos mediante el método `crearTurno()`. Con el patrón Builder, este método se simplifica:
-
-```text
-// ANTES (en Agenda)
-PÚBLICO crearTurno(fechaHora, paciente, medico, sobreturno): Turno
-    Turno nuevoTurno = new Turno(fechaHora, paciente, medico, sobreturno)
-    turnos.agregar(nuevoTurno)
-    RETORNAR nuevoTurno
-FIN
-
-// DESPUÉS (en Agenda)
-PÚBLICO crearTurno(builder: Turno.Builder): Turno
-    Turno nuevoTurno = builder.build()
-    turnos.agregar(nuevoTurno)
-    RETORNAR nuevoTurno
-FIN
-```
-
-### 4.2 Flujo de Creación de Turno con Builder
-
-```text
-// 1. La Secretaria solicita crear un turno
-Secretaria.solicitarTurno(pacienteId, tipo)
-
-// 2. La Secretaria construye el Builder con los datos obligatorios
-builder = new Turno.Builder("2026-06-30 10:00", paciente, medico)
-
-// 3. La Secretaria agrega atributos opcionales
-builder.conEstado(TurnoEstado.PENDIENTE)
-builder.conHistorialEvento("Turno creado")
-
-// 4. La Secretaria pasa el Builder a la Agenda
-turno = Agenda.crearTurno(builder)
-
-// 5. La Agenda valida y construye el Turno usando builder.build()
-// 6. La Agenda agrega el Turno a su lista y lo retorna
-```
-
-### 4.3 Coherencia con las Tarjetas CRC
-
-| Tarjeta CRC | Relación con el Builder |
-|-------------|-------------------------|
-| **Turno** | Es el "Product" del patrón. Sus responsabilidades no cambian, solo su construcción |
-| **Agenda** | Sigue siendo responsable de crear turnos, pero ahora recibe un Builder en lugar de parámetros sueltos |
-| **Secretaria** | Construye el Builder con los datos del turno antes de pasarlo a la Agenda |
-| **Paciente** | Es un colaborador del Builder (atributo obligatorio) |
-| **Medico** | Es un colaborador del Builder (atributo obligatorio) y valida sobreturnos |
-
----
-
-## 5. Ventajas de Aplicar el Patrón Builder
-
-### 5.1 Ventajas Técnicas
-
-| Ventaja | Descripción |
-|---------|-------------|
-| **Legibilidad** | El código cliente es auto-documentado: `conSobreturno(true)` es más claro que un `true` suelto |
-| **Inmutabilidad** | El objeto `Turno` resultante puede ser inmutable (sin setters), mejorando la seguridad |
-| **Validación centralizada** | Todas las reglas de negocio se validan en `build()`, no dispersas en constructores |
-| **Flexibilidad** | Se pueden crear turnos con diferentes combinaciones de atributos sin múltiples constructores |
-| **Mantenibilidad** | Agregar un nuevo atributo opcional no requiere cambiar las llamadas existentes |
-
-### 5.2 Alineación con Principios SOLID
-
-| Principio | Cómo lo cumple el Builder |
-|-----------|---------------------------|
-| **SRP** (Single Responsibility) | La construcción del objeto está separada de su representación y lógica de negocio |
-| **OCP** (Open/Closed) | Se pueden agregar nuevos atributos opcionales sin modificar el código existente |
-| **LSP** (Liskov Substitution) | No aplica directamente, pero mantiene la coherencia con la jerarquía de `UsuarioDelSistema` |
-| **ISP** (Interface Segregation) | El Builder ofrece solo los métodos necesarios para cada escenario de construcción |
-| **DIP** (Dependency Inversion) | La clase `Agenda` depende de la abstracción `Turno.Builder`, no de constructores concretos |
-
-### 5.3 Beneficios para el Equipo de Desarrollo
-
-1. **Onboarding más rápido:** Los nuevos desarrolladores entienden rápidamente cómo crear turnos
-2. **Menos errores:** El compilador ayuda a detectar errores de tipo en los métodos fluentes
-3. **Testing más fácil:** Se pueden crear turnos de prueba con solo los atributos necesarios
-4. **Refactoring seguro:** Cambios en la estructura de `Turno` no rompen el código cliente
-
----
-
-## 6. Consideraciones de Implementación
-
-### 6.1 Cuándo NO usar Builder
-
-El patrón Builder **no es recomendable** cuando:
-- La clase tiene pocos atributos (menos de 4-5)
-- Todos los atributos son obligatorios
-- La construcción es trivial (no requiere validaciones)
-
-En nuestro caso, `Turno` tiene **10 atributos** (3 obligatorios + 7 opcionales), por lo que el patrón está **plenamente justificado**.
-
-### 6.2 Alternativas Consideradas
-
-| Alternativa | Por qué se descartó |
-|-------------|---------------------|
-| **Múltiples constructores** | Genera el "constructor telescópico" con muchas sobrecargas confusas |
-| **JavaBeans (setters)** | Permite objetos en estado inconsistente (se pueden setear atributos inválidos) |
-| **Factory Method** | No resuelve la complejidad de construcción con atributos opcionales |
-| **Prototype** | No aplica porque cada turno es único (no se clonan turnos existentes) |
-
-### 6.3 Impacto en el Rendimiento
-
-- **Overhead mínimo:** La creación del Builder es una operación liviana
-- **Memoria adicional:** Se crea un objeto Builder temporal por cada Turno, pero es desechable
-- **Conclusión:** El impacto es insignificante comparado con los beneficios de mantenibilidad
-
----
-
-## 7. Relación con Otros Patrones
-
-### 7.1 Builder + Factory Method
-
-Se pueden combinar para crear una **Factory** que use Builder internamente:
-
-```text
-CLASE TurnoFactory
-    PÚBLICO estático crearTurnoRegular(fechaHora, paciente, medico): Turno
-        RETORNAR new Turno.Builder(fechaHora, paciente, medico)
-            .conEstado(TurnoEstado.PENDIENTE)
-            .build()
-    FIN
-    
-    PÚBLICO estático crearSobreturno(fechaHora, paciente, medico): Turno
-        RETORNAR new Turno.Builder(fechaHora, paciente, medico)
-            .conSobreturno(true)
-            .conEstado(TurnoEstado.CONFIRMADO)
-            .build()
-    FIN
-FIN
-```
-
-### 7.2 Builder + State
-
-El patrón Builder se integra naturalmente con el patrón **State** (que podríamos aplicar en el futuro para gestionar los estados del turno). El Builder establece el estado inicial, y el patrón State gestiona las transiciones.
-
----
-
-## 8. Conclusiones
-
-### 8.1 Resumen de la Propuesta
-
-El patrón **Builder** aplicado a la clase `Turno` de SistemaTurnosMedicos:
-
-✅ Resuelve el problema del constructor con muchos parámetros  
-✅ Mejora la legibilidad y mantenibilidad del código  
-✅ Centraliza las validaciones de negocio en un solo punto  
-✅ Se integra coherentemente con el diseño actual (diagrama de clases, tarjetas CRC)  
-✅ Cumple con los principios SOLID  
-✅ Es escalable para futuros cambios en la estructura de `Turno`
-
-### 8.2 Recomendación Final
-
-Se **recomienda fuertemente** implementar el patrón Builder para la clase `Turno` en la próxima iteración del sistema. Los beneficios en mantenibilidad, legibilidad y reducción de errores superan ampliamente el pequeño overhead de implementación.
-
-### 8.3 Próximos Pasos
-
-1. ✅ **Implementar** la clase `Turno.Builder` en el código fuente
-2. ✅ **Refactorizar** las llamadas existentes a `new Turno(...)` para usar el Builder
-3. ✅ **Actualizar** la clase `Agenda.crearTurno()` para recibir un Builder
-4. ✅ **Escribir tests** unitarios que validen las reglas de negocio en `build()`
-5. 🔄 **Evaluar** la aplicación de otros patrones (State para TurnoEstado, Observer para notificaciones)
-
----
-
-## 9. Referencias Bibliográficas
-
-- **Gamma, E., Helm, R., Johnson, R., Vlissides, J.** (1994). *Design Patterns: Elements of Reusable Object-Oriented Software*. Addison-Wesley.
-- **Bloch, J.** (2018). *Effective Java* (3rd Edition). Capítulo 2: "Creating and Destroying Objects" - Item 2: "Consider a builder when faced with many constructor parameters".
-- **Freeman, E., Robson, E., Bates, B., Sierra, K.** (2004). *Head First Design Patterns*. O'Reilly Media.
-
----
-
-**Documento generado por:** @nachonervi-design  
-**Rol:** Especialista en Patrones Creacionales  
-**Repositorio:** [SistemaTurnosMedicos](https://github.com/eternalnight04/SistemaTurnosMedicos)

@@ -1,0 +1,116 @@
+@startuml 05-solid-dip
+title Principio DIP - Dependency Inversion Principle
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam interface {
+  BackgroundColor LightBlue
+}
+
+' Capa de Alto Nivel (Lógica de Negocio)
+package "Capa de Alto Nivel" #LightGreen {
+  class Agenda {
+    - servicioNotificaciones: IServicioNotificaciones
+    - servicioAuditoria: IServicioAuditoria
+    - turnos: List<Turno>
+    + crearTurno(fechaHora, paciente, medico, sobreturno): Turno
+    + verificarDisponibilidad(medicoId, fecha, hora): boolean
+  }
+  
+  class Turno {
+    - id: String
+    - fechaHoraProgramada: DateTime
+    - paciente: Paciente
+    - medico: Medico
+    - estado: TurnoEstado
+    + cambiarEstado(nuevoEstado): void
+    + registrarLlegada(horaReal): void
+  }
+}
+
+' Capa de Abstracciones (Interfaces)
+package "Capa de Abstracciones" #LightYellow {
+  interface IServicioNotificaciones {
+    + enviarNotificacion(destinatario: String, mensaje: String): void
+  }
+  
+  interface IServicioAuditoria {
+    + registrarEvento(turnoId: String, descripcion: String): void
+  }
+  
+  interface IRepositorioTurnos {
+    + guardar(turno: Turno): void
+    + buscarPorId(id: String): Turno
+  }
+}
+
+' Capa de Bajo Nivel (Implementaciones Concretas)
+package "Capa de Bajo Nivel" #LightCoral {
+  class ServicioNotificacionesEmail {
+    + enviarNotificacion(destinatario: String, mensaje: String): void
+  }
+  
+  class ServicioNotificacionesSMS {
+    + enviarNotificacion(destinatario: String, mensaje: String): void
+  }
+  
+  class ServicioAuditoriaBD {
+    + registrarEvento(turnoId: String, descripcion: String): void
+  }
+  
+  class ServicioAuditoriaArchivo {
+    + registrarEvento(turnoId: String, descripcion: String): void
+  }
+  
+  class RepositorioTurnosMySQL {
+    + guardar(turno: Turno): void
+    + buscarPorId(id: String): Turno
+  }
+}
+
+' Relaciones: Alto nivel depende de abstracciones
+Agenda --> IServicioNotificaciones : depende de
+Agenda --> IServicioAuditoria : depende de
+Agenda --> IRepositorioTurnos : depende de
+
+' Relaciones: Bajo nivel implementa abstracciones
+ServicioNotificacionesEmail ..|> IServicioNotificaciones : implementa
+ServicioNotificacionesSMS ..|> IServicioNotificaciones : implementa
+ServicioAuditoriaBD ..|> IServicioAuditoria : implementa
+ServicioAuditoriaArchivo ..|> IServicioAuditoria : implementa
+RepositorioTurnosMySQL ..|> IRepositorioTurnos : implementa
+
+' Relaciones de dominio
+Agenda --> Turno : gestiona
+
+' Notas explicativas
+note right of Agenda
+  **DIP Aplicado:**
+  Agenda depende de INTERFACES
+  (IServicioNotificaciones,
+  IServicioAuditoria), NO de
+  implementaciones concretas.
+  
+  Esto permite cambiar
+  implementaciones sin
+  modificar Agenda.
+end note
+
+note bottom of IServicioNotificaciones
+  **Abstracción:**
+  Define el contrato.
+  Las implementaciones concretas
+  (Email, SMS) dependen de esta
+  interfaz, no al revés.
+end note
+
+note bottom of ServicioNotificacionesEmail
+  **Implementación concreta:**
+  Depende de la abstracción
+  (IServicioNotificaciones).
+  
+  Se puede cambiar por SMS
+  sin modificar Agenda.
+end note
+
+@enduml

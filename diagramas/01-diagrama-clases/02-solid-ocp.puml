@@ -1,0 +1,93 @@
+@startuml 02-solid-ocp
+title Principio OCP - Open/Closed Principle
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+
+' Clase abstracta base
+abstract class UsuarioDelSistema {
+  - id: String
+  - nombre: String
+  - dni: String
+  - email: String
+  - telefono: String
+  - contrasena: String
+  + autenticar(password: String): boolean
+  + actualizarDatos(): void
+}
+
+' Subclases existentes (cerradas para modificación)
+class Paciente {
+  - historiaClinicaId: String
+  + solicitarTurno(tipo: String): void
+  + confirmarTurno(turnoId: String): boolean
+  + cancelarTurno(turnoId: String): boolean
+}
+
+class Medico {
+  - matricula: String
+  - especialidad: String
+  + consultarAgenda(fecha: Date): List<Turno>
+  + autorizarSobreturno(solicitudId: String): boolean
+}
+
+class Secretaria {
+  - secretariaId: String
+  + darAltaPaciente(datos: Map): Paciente
+  + reprogramarTurno(turnoId: String, nuevaFecha: DateTime): boolean
+}
+
+' Subclase futura (abierta para extensión)
+class Administrador #LightGreen {
+  - permisos: List<String>
+  + gestionarUsuarios(): void
+  + verReportes(): void
+}
+
+' Herencia
+UsuarioDelSistema <|-- Paciente
+UsuarioDelSistema <|-- Medico
+UsuarioDelSistema <|-- Secretaria
+UsuarioDelSistema <|-- Administrador
+
+' Enum de estados (también sigue OCP)
+enum TurnoEstado {
+  PENDIENTE
+  CONFIRMADO
+  CANCELADO
+  REPROGRAMADO
+  PRESENTE
+  REALIZADO
+  EN_ESPERA
+}
+
+class Turno {
+  - estado: TurnoEstado
+  + cambiarEstado(nuevoEstado: TurnoEstado): void
+}
+
+Turno --> TurnoEstado
+
+' Notas explicativas
+note right of UsuarioDelSistema
+  **OCP Aplicado:**
+  Clase base estable que permite
+  agregar nuevos tipos de usuarios
+  SIN modificar su código.
+end note
+
+note right of Administrador
+  **Extensión futura:**
+  Nuevo tipo de usuario agregado
+  SIN modificar las clases existentes
+  (Paciente, Medico, Secretaria).
+end note
+
+note bottom of TurnoEstado
+  **OCP en Enum:**
+  Fácil agregar nuevos estados
+  (ej: EN_ESPERA) sin romper
+  el código existente.
+end note
+
+@enduml

@@ -1,0 +1,136 @@
+@startuml 01-patron-creacional-builder
+title Patrón Builder aplicado a la clase Turno - SistemaTurnosMedicos
+
+' Estilos
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam defaultFontSize 11
+
+' Enumeración TurnoEstado
+enum TurnoEstado {
+  PENDIENTE
+  CONFIRMADO
+  CANCELADO
+  REPROGRAMADO
+  PRESENTE
+  REALIZADO
+}
+
+' Clase Turno (Product)
+class Turno {
+  - fechaHoraProgramada: DateTime
+  - paciente: Paciente
+  - medico: Medico
+  - estado: TurnoEstado
+  - sobreturno: boolean
+  - horaRealLlegada: DateTime
+  - presente: boolean
+  - diferenciaMinutos: int
+  - historial: List<String>
+  __
+  **Métodos de negocio:**
+  + cambiarEstado(nuevoEstado): void
+  + reprogramarTurno(nuevaFechaHora): void
+  + cancelarTurno(motivo, usuarioId): void
+  + registrarLlegada(horaReal): void
+  __
+  **Getters:**
+  + getId(): String
+  + getFechaHoraProgramada(): DateTime
+  + getPaciente(): Paciente
+  + getMedico(): Medico
+  + getEstado(): TurnoEstado
+  + esSobreturno(): boolean
+  __
+  **Constructor privado:**
+  - Turno(builder: Builder)
+}
+
+' Clase Builder (clase interna estática)
+class "Turno.Builder" as Builder {
+  - fechaHoraProgramada: DateTime
+  - paciente: Paciente
+  - medico: Medico
+  - estado: TurnoEstado = PENDIENTE
+  - sobreturno: boolean = false
+  - horaRealLlegada: DateTime = null
+  - presente: boolean = false
+  - diferenciaMinutos: int = 0
+  - historial: List<String> = []
+  __
+  **Constructor (parámetros obligatorios):**
+  + Builder(fechaHora, paciente, medico)
+  __
+  **Métodos fluentes (opcionales):**
+  + conEstado(estado): Builder
+  + conSobreturno(sobreturno): Builder
+  + conHoraLlegada(horaReal): Builder
+  + conPresente(presente): Builder
+  + conHistorialEvento(evento): Builder
+  __
+  **Método de construcción:**
+  + build(): Turno
+}
+
+' Clases colaboradoras
+class Paciente {
+  - historiaClinica: String
+  + solicitarTurno(tipo): void
+  + confirmarTurno(turnoId): boolean
+  + recibirNotificacion(mensaje): void
+}
+
+class Medico {
+  - matricula: String
+  - especialidad: String
+  + autorizarSobreturno(solicitudId): boolean
+  + consultarAgenda(fecha): List
+}
+
+class Agenda {
+  - turnos: List<Turno>
+  + crearTurno(builder: Builder): Turno
+  + verificarDisponibilidad(medicoId, fecha, hora): boolean
+}
+
+' Relaciones
+Turno +-- Builder : contiene <<static>>
+Turno --> TurnoEstado : usa
+Turno --> Paciente : tiene
+Turno --> Medico : tiene
+Builder --> Turno : crea
+Builder --> Paciente : referencia
+Builder --> Medico : referencia
+Builder --> TurnoEstado : referencia
+Agenda --> Builder : usa para crear
+Agenda *-- Turno : contiene
+
+' Notas explicativas
+note right of Turno
+  **Product** del patrón Builder.
+  El constructor es PRIVADO,
+  solo el Builder puede instanciarlo.
+end note
+
+note right of Builder
+  **Builder** del patrón.
+  Ofrece una API fluente para
+  construir objetos Turno paso a paso.
+  Valida reglas de negocio en build().
+end note
+
+note bottom of Agenda
+  La Agenda usa el Builder
+  para crear instancias de Turno
+  de forma controlada.
+end note
+
+note top of Turno
+  << Product >>
+end note
+
+note top of Builder
+  << Builder >>
+end note
+
+@enduml

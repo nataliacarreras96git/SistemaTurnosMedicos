@@ -1,0 +1,104 @@
+@startuml 01-patron-estructural-facade
+
+title Patrón Estructural Facade - Gestión de Turnos
+
+enum TurnoEstado {
+  PENDIENTE
+  CONFIRMADO
+  CANCELADO
+  REPROGRAMADO
+  PRESENTE
+  REALIZADO
+}
+
+class Secretaria {
+    -legajo: String
+
+    +solicitarTurno(paciente, tipo)
+    +cancelarTurno(turno, motivo): boolean
+    +reprogramarTurno(turno, nuevaFechaHora): boolean
+    +darAltaPaciente(datos): Paciente
+    +consultarAgenda(medicoId, fecha)
+}
+
+class GestionTurnosFacade {
+    -agenda: Agenda
+    -notificacion: Notificacion
+
+    +crearTurno(paciente, medico, fechaHora)
+    +cancelarTurno(turno)
+}
+
+class Agenda {
+    -medico: Medico
+    -turnos: List<Turno>
+
+    +verificarDisponibilidad(medico, fecha, hora): boolean
+    +registrarDisponibilidad(medico, horario): void
+    +crearTurno(fechaHora, paciente, medico, sobreturno): Turno
+    +buscarTurno(turnoId): Turno
+    +accederAgendaDiaria(legajo, fecha)
+    +sugerirHorariosAlternativos(medico, fecha)
+    +registrarEnHistorial(turno, descripcion): void
+    +buscarPaciente(identificador): Paciente
+}
+
+class Turno {
+    -fechaHoraProgramada: DateTime
+    -paciente: Paciente
+    -medico: Medico
+    -estado: TurnoEstado
+    -sobreturno: boolean
+    -horaRealLlegada: DateTime
+    -presente: boolean
+    -diferenciaMinutos: int
+    -historial: List<String>
+
+    +Turno(fechaHora, paciente, medico, sobreturno)
+    +cambiarEstado(nuevoEstado): void
+    +reprogramar(nuevaFechaHora): void
+    +cancelar(motivo, usuario): void
+    +registrarLlegada(horaReal): void
+}
+
+class Paciente {
+    -dni: string
+    -domicilio: string
+    -telefono: string
+
+    +solicitarTurno(tipo): void
+    +confirmarTurno(turno): boolean
+    +cancelarTurno(turno): boolean
+    +recibirNotificacion(mensaje): void
+}
+
+class Medico {
+    -matricula: String
+    -especialidad: String
+    -horarioDisponible
+
+    +consultarAgenda(fecha)
+    +autorizarSobreturno(solicitud): boolean
+    +registrarObservacion(turno, observacion): void
+    +modificarDisponibilidad(nuevoHorario): void
+}
+
+class Notificacion {
+    -destinatario: String
+    -mensaje: String
+
+    +enviarMensaje()
+}
+
+Secretaria "1" --> "1" GestionTurnosFacade : usa
+
+GestionTurnosFacade "1" --> "1" Agenda : coordina
+GestionTurnosFacade "1" --> "0..*" Turno : gestiona
+GestionTurnosFacade "1" --> "1" Notificacion : utiliza
+
+Agenda "1" *-- "0..*" Turno : contiene
+
+Turno "0..*" --> "1" Paciente
+Turno "0..*" --> "1" Medico
+
+@enduml

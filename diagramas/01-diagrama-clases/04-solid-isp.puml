@@ -1,0 +1,99 @@
+@startuml 04-solid-isp
+title Principio ISP - Interface Segregation Principle
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam interface {
+  BackgroundColor LightBlue
+}
+
+' Interfaces segregadas
+interface IAutenticable {
+  + autenticar(password: String): boolean
+  + actualizarDatos(): void
+}
+
+interface IGestorTurnos {
+  + solicitarTurno(tipo: String): void
+  + confirmarTurno(turnoId: String): boolean
+  + cancelarTurno(turnoId: String): boolean
+}
+
+interface IOperacionesMedicas {
+  + consultarAgenda(fecha: Date): List<Turno>
+  + autorizarSobreturno(solicitudId: String): boolean
+  + registrarObservacion(turnoId: String, observacion: String): void
+}
+
+interface IOperacionesAdministrativas {
+  + darAltaPaciente(datos: Map): Paciente
+  + reprogramarTurno(turnoId: String, nuevaFecha: DateTime): boolean
+  + consultarAgendaMedico(medicoId: String, fecha: Date): List<Turno>
+}
+
+interface INotificable {
+  + recibirNotificacion(mensaje: String): void
+}
+
+' Clases que implementan solo las interfaces que necesitan
+class Paciente {
+  - historiaClinicaId: String
+}
+
+class Medico {
+  - matricula: String
+  - especialidad: String
+}
+
+class Secretaria {
+  - secretariaId: String
+}
+
+' Implementación de interfaces
+Paciente ..|> IAutenticable
+Paciente ..|> IGestorTurnos
+Paciente ..|> INotificable
+
+Medico ..|> IAutenticable
+Medico ..|> IOperacionesMedicas
+Medico ..|> INotificable
+
+Secretaria ..|> IAutenticable
+Secretaria ..|> IOperacionesAdministrativas
+Secretaria ..|> INotificable
+
+' Notas explicativas
+note right of IAutenticable
+  **Interfaz común:**
+  Usada por todos los usuarios
+  para autenticación y gestión
+  de datos personales.
+end note
+
+note right of IGestorTurnos
+  **Interfaz específica:**
+  Solo implementada por
+  Paciente (quien gestiona
+  sus propios turnos).
+end note
+
+note right of IOperacionesMedicas
+  **Interfaz específica:**
+  Solo implementada por
+  Medico (operaciones
+  médicas exclusivas).
+end note
+
+note bottom of Secretaria
+  **ISP Aplicado:**
+  Secretaria implementa solo
+  las interfaces que necesita:
+  - IAutenticable
+  - IOperacionesAdministrativas
+  - INotificable
+  
+  NO implementa IGestorTurnos
+  ni IOperacionesMedicas.
+end note
+
+@enduml

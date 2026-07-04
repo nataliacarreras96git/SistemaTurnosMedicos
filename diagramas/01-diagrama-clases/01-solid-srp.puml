@@ -1,0 +1,83 @@
+@startuml 01-solid-srp
+title Principio SRP - Single Responsibility Principle
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+
+' Clase Turno - Responsabilidad: ciclo de vida del turno
+class Turno {
+  - fechaHoraProgramada: DateTime
+  - paciente: Paciente
+  - medico: Medico
+  - estado: TurnoEstado
+  + cambiarEstado(nuevoEstado: TurnoEstado): void
+  + reprogramar(nuevaFechaHora: DateTime): void
+  + registrarLlegada(horaReal: DateTime): void
+}
+
+' Clase ServicioNotificaciones - Responsabilidad: enviar notificaciones
+class ServicioNotificaciones {
+  - tipoNotificacion: String
+  - plantilla: String
+  - fechaEnvio: DateTime
+  - estado: String
+  - destinatario: String
+  + enviarNotificacionPaciente(paciente: Paciente, mensaje: String): void
+  + enviarNotificacionMedico(medico: Medico, mensaje: String): void
+  + enviarEmail(destinatario: String, mensaje: String): void
+  + enviarSMS(telefono: String, mensaje: String): void
+}
+
+' Clase ServicioAuditoria - Responsabilidad: registrar eventos
+class ServicioAuditoria {
+  - eventos: List<String>
+  - fechaRegistro: DateTime
+  - usuarioResponsable: String
+  - accionRealizada: String
+  - detalles: String
+  + registrarEvento(turnoId: String, usuario: String, accion: String): void
+  + consultarHistorial(turnoId: String): List<String>
+}
+
+' Clase Agenda - Responsabilidad: coordinar creación de turnos
+class Agenda {
+  - medico: Medico
+  - turnos: List<Turno>
+  + crearTurno(builder: Turno.Builder): Turno
+  + verificarDisponibilidad(medicoId: String, fecha: DateTime, hora: String): boolean
+}
+
+' Relaciones
+Agenda --> Turno : crea
+Agenda --> ServicioNotificaciones : usa
+Agenda --> ServicioAuditoria : usa
+ServicioNotificaciones --> Paciente : notifica
+ServicioNotificaciones --> Medico : notifica
+
+' Notas explicativas
+note right of Turno
+  **Responsabilidad única:**
+  Gestionar el ciclo de vida del turno
+  (cambios de estado, reprogramación, llegada)
+end note
+
+note right of ServicioNotificaciones
+  **Responsabilidad única:**
+  Enviar notificaciones a usuarios
+  (emails, SMS, etc.)
+end note
+
+note right of ServicioAuditoria
+  **Responsabilidad única:**
+  Registrar eventos en el historial
+  (auditoría y trazabilidad)
+end note
+
+note bottom of Agenda
+  **SRP Aplicado:**
+  Agenda solo coordina la creación de turnos.
+  Delega notificaciones y auditoría a servicios
+  especializados.
+end note
+
+@enduml

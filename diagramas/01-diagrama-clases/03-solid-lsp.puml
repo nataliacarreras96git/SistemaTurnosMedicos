@@ -1,0 +1,81 @@
+@startuml 03-solid-lsp
+title Principio LSP - Liskov Substitution Principle
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+
+' Clase abstracta base
+abstract class UsuarioDelSistema {
+  - id: String
+  - nombre: String
+  - email: String
+  - contrasena: String
+  + autenticar(password: String): boolean
+  + actualizarDatos(): void
+  + recibirNotificacion(mensaje: String): void
+}
+
+' Subclases que pueden sustituir a la superclase
+class Paciente {
+  - historiaClinicaId: String
+  + solicitarTurno(tipo: String): void
+  + confirmarTurno(turnoId: String): boolean
+}
+
+class Medico {
+  - matricula: String
+  - especialidad: String
+  + consultarAgenda(fecha: Date): List<Turno>
+  + autorizarSobreturno(solicitudId: String): boolean
+}
+
+class Secretaria {
+  - secretariaId: String
+  + darAltaPaciente(datos: Map): Paciente
+  + reprogramarTurno(turnoId: String, nuevaFecha: DateTime): boolean
+}
+
+' Herencia
+UsuarioDelSistema <|-- Paciente
+UsuarioDelSistema <|-- Medico
+UsuarioDelSistema <|-- Secretaria
+
+' Ejemplo de polimorfismo
+class ListaUsuarios {
+  - usuarios: List<UsuarioDelSistema>
+  + autenticarTodos(password: String): void
+  + notificarTodos(mensaje: String): void
+}
+
+ListaUsuarios --> UsuarioDelSistema : contiene
+
+' Notas explicativas
+note right of UsuarioDelSistema
+  **Contrato de la superclase:**
+  - autenticar(password): boolean
+  - actualizarDatos(): void
+  - recibirNotificacion(mensaje): void
+  
+  **Invariantes:**
+  - email no es nulo
+  - contrasena está encriptada
+end note
+
+note right of Paciente
+  **LSP Cumplido:**
+  ✅ Mantiene firma de métodos
+  ✅ Mismo tipo de retorno
+  ✅ No lanza excepciones nuevas
+  ✅ Respeta precondiciones
+  ✅ Garantiza postcondiciones
+  ✅ Preserva invariantes
+end note
+
+note bottom of ListaUsuarios
+  **Polimorfismo seguro:**
+  Puede contener Paciente, Medico o
+  Secretaria y tratarlos como
+  UsuarioDelSistema sin problemas.
+end note
+
+@enduml

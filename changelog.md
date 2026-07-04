@@ -28,7 +28,9 @@
 
 - [fix/nachonervi-reescribir-docs-creacional] Se reescribió el anexo del patrón Builder con formato académico y estructura del parcial. PR: [#153](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/153) - @nachonervi-design (Especialista en Patrones Creacionales)
 
-- [fix/esp-patron-estructural-facade] Correcciones en diagrama estructural. PR: [#156](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/156) - @lautarochavez14 (Especialista en Patron de Diseño Estructural)
+- [fix/esp-patron-estructural-facade-2] Correcciones en diagrama estructural. PR: [#158](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/158) - @eternalnight04 (Especialista en Patrón de Diseño de Comportamiento)
+
+**Nota con respecto a la PR #158:** Es una rama realizada copiando y pegando los cambios que hizo @lautarochavez14 en su PR: [#156](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/156) y en PR: [#157](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/157). Estas PRs no pudieron mergearse debido a conflictos en sus ramas, por lo tanto, para ahorrar tiempo, se decidió hacer una nueva PR que contenga estos cambios.
 
 
 

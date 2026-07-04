@@ -19,7 +19,7 @@
 ### Fixed
 - [fix/coordinador-devops.md] Implementación de ia/segundo-parcial/coordinador-devops.md, pasada por alto. PR: [#149](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/149) - @britezacostaalexis-pixel(Coordinador y Devops)
 
-- [fix/nachonervi-corregir-solid-srp-atributos-ids] Corregido diagrama SRP según feedback del coordinador: agregados atributos faltantes en ServicioNotificaciones y ServicioAuditoria, eliminadas todas las IDs de las clases para mayor abstracción. Archivos modificados: diagramas/01-diagrama-clases/01-solid-srp.puml y .png. Autor: @nachonervi-design (Especialista en Patrones Creacionales)
+- [fix/nachonervi-corregir-solid-srp-atributos-ids] Corregido diagrama SRP según feedback del coordinador: agregados atributos faltantes en ServicioNotificaciones y ServicioAuditoria, eliminadas todas las IDs de las clases para mayor abstracción. Archivos modificados: diagramas/01-diagrama-clases/01-solid-srp.puml y .png. Autor: @nachonervi-design PR: [#159] (https://github.com/eternalnight04/SistemaTurnosMedicos/pull/159) (Especialista en Patrones Creacionales)
 
 - [fix/coordinador-devops.md] Implementación de ia/segundo-parcial/coordinador-devops.md, pasada por alto. PR: [#149](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/149) - @britezacostaalexis-pixel(Coordinador y Devops)
 

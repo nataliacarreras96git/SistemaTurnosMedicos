@@ -26,14 +26,14 @@ Esta entrega se destaca por la inclusión de diagramas de clases y analisis func
 
 | Nombre y Apellido | Rol asignado en esta entrega | Usuario GitHub |
 |-------|-------------|----------|
-| Milenka Vila | Analista Funcional del Caso de Uso 1 + Documentador y Coordinador | @eternalnight04 |
-| Alexis Matias Britez Acosta | Analista Funcional de Casos de Uso 2 y 3 | @britezacostaalexis-pixel |
-| Lautaro Chavez | Analista Funcional de Casos de Uso 4 y 5 | @lautarochavez14 |
-| Ignacio Nervi | Arquitecto de Dominio | @nachonervi-design |
+| Milenka Vila |Especialista en Patrón de Diseño de Comportamiento | @eternalnight04 |
+| Alexis Matias Britez Acosta | Coordinador y Devops | @britezacostaalexis-pixel |
+| Lautaro Chavez | Especialista en Patrón de Diseño Estructural | @lautarochavez14 |
+| Ignacio Nervi | Especialista en Patrón de diseño creacional| @nachonervi-design |
 
 ---
 
-## Roles de la Actividad Obligatoria N°4
+## Roles del segundo parcial
 
 Los roles para la Actividad Obligatoria N°4 están reflejados en la columna `Rol asignado en esta entrega` de la tabla de Integrantes.
 
@@ -41,11 +41,11 @@ Los roles para la Actividad Obligatoria N°4 están reflejados en la columna `Ro
 
 ## Navegación mínima
 
-- Anexos (introducción y contexto): [anexos/introduccion.md](./anexos/introduccion.md)
+- Anexos (introducción y contexto): [anexos/anexos.md](./anexos/anexos.md)
 - Analisis Funcional de Casos de Uso: [analisis-funcional/](./anexos/analisis-funcional/analisis_casos_uso.md)
 - Diagramas de Clases de Casos de Uso: [diagramas_de_clases.md](./diagramas/01-diagrama-clases/diagramas_de_clases.md)
 - Índice de Diagramas UML actualizado: [diagramas/diagramasUML.md](./diagramas/diagramasUML.md)
-- Documentación uso de IA para esta entrega: [ia/a4/](./ia/a4/)
+- Documentación uso de IA para esta entrega: [ia/a4/](./ia/segundo-parcial/)
 - Cambios y versiones: [changelog.md](./changelog.md)
 
 ---

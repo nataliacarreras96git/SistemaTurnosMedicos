@@ -1,0 +1,154 @@
+@startuml 01-patron-comportamiento-observer
+
+' ==================== CLASES ABSTRACTAS Y INTERFACES ====================
+
+interface iNotificacion {
+    + actualizar(): void
+}
+
+abstract class Sujeto {
+    # notificadores: List<iNotificacion>
+    --
+    + suscribir(): void
+    + desuscribir(): void
+    + notificar(): void
+}
+
+abstract class NotificacionMedio {
+    - medio: String
+    - tipo: String
+    - mensaje : String
+    --
+    + enviarNotificacion(): void
+    + actualizar(): void
+}
+
+' ==================== CLASES CONCRETAS ====================
+
+class Turno {
+    - fechaHora: DateTime
+    - paciente: Paciente
+    - medico: Medico
+    - estado: TurnoEstado
+    - sobreturno: boolean
+    --
+    + crearTurno(): void
+    + cambiarEstado(): void
+    + reprogramarTurno(): void
+    + cancelarTurno(): void
+}
+
+class NotificacionEmail {
+    - email: String
+    - tipo : String
+    - mensaje : String
+    --
+    + NotificacionEmail()
+    + enviarNotificacion(): void
+    + actualizar(): void
+}
+
+class NotificacionWhatsapp {
+    - telefono: String
+    - tipo : String
+    - mensaje : String
+    --
+    + NotificacionWhatsapp()
+    + enviarNotificacion(): void
+    + actualizar(): void
+}
+
+class Auditoria {
+    - eventos: List<String>
+    --
+    + guardarEvento(): void
+    + actualizar(): void
+}
+
+class Paciente {
+    - historiaClinica: String
+    - telefono: String
+    - email : String
+    --
+    + solicitarTurno(): void
+    + confirmarTurno(): void
+    + cancelarTurno(): void
+}
+
+class Medico {
+    - especialidad: String
+    - horarioDisponible: String
+    --
+    + consultarAgenda(): void
+    + autorizarSobreturno(): void
+}
+
+' ==================== RELACIONES DE HERENCIA ====================
+
+Sujeto <|-- Turno : hereda
+
+' ==================== RELACIONES DE IMPLEMENTACIÓN ====================
+
+iNotificacion <|.. NotificacionMedio : implementa
+iNotificacion <|.. Auditoria : implementa
+
+' ==================== RELACIONES DE COMPOSICIÓN Y AGREGACIÓN ====================
+
+NotificacionMedio <|-- NotificacionEmail : hereda
+NotificacionMedio <|-- NotificacionWhatsapp : hereda
+
+Turno o-- Paciente : contiene
+Turno o-- Medico : contiene
+
+' ==================== RELACIONES DE ASOCIACIÓN ====================
+
+Turno "0..*" -- "*" iNotificacion : observadores
+
+Paciente "1" -- "*" Turno : solicita
+Medico "1" -- "*" Turno : atiende
+
+' ==================== ANOTACIONES ====================
+
+note right of Sujeto
+  Clase abstracta que encapsula
+  el mecanismo de suscripción y notificación.
+  Define el contrato para objetos observables.
+end note
+
+note right of iNotificacion
+  Interfaz minimalista que define
+  el contrato de actualización.
+  Ejemplo de ISP (Interface Segregation Principle)
+end note
+
+note right of NotificacionMedio
+  Clase abstracta que adapta
+  la información del Turno a mensajes.
+  Encapsula lógica común de transformación.
+end note
+
+note bottom of Turno
+  Observable que notifica cambios de estado
+  a todos sus observadores suscritos.
+  Cumple con SRP al delegar notificaciones.
+end note
+
+note right of Paciente
+  Observador que se suscribe a cambios
+  en Turno para ser notificado vía
+  Email o WhatsApp de nuevos estados.
+end note
+
+note right of Medico
+  Observador que se suscribe a cambios
+  en Turno para conocer estados del
+  turno asignado.
+end note
+
+note right of Auditoria
+  Observador que registra todos los
+  cambios de estado del Turno para
+  garantizar trazabilidad y auditoría.
+end note
+
+@enduml

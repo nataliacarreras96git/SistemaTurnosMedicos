@@ -2,12 +2,27 @@
 
 ## [Unreleased]
 
-## [Released - Segundo Parcial]
+## [Released - Segundo Parcial] - 2026-06-27
 
-### Addeed
+### Added
+
+- [feature/coord-devops-update-docs] Se aplicaron correcciónes y actuaizaciones para que  Sistema de Turnos Médicos pueda mejorar el rendimiento. PR: [#147](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/147) -@britezacostaalexis-pixel(Coordinador y Devops)
+
+
+- [feature/esp-patron-estructural-facade] Se aplicó el patrón facade al Sistema de Turnos Médicos para mejorar el rendimiento. PR: [#145](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/145) - @lautarochavez14 (Especialista en Patrón de diseño Estructural)
+
 
 - [feature/esp-creacional-add-patron-builder] Patrón Builder aplicado a la clase Turno para resolver el constructor telescópico. Incluye diagrama UML, documentación completa con ejemplos para CU01/CU02/CU04/CU05, integración con Agenda, y documentación del proceso de IA. Principios SOLID (SRP, OCP, LSP, ISP, DIP) documentados con diagramas PlantUML específicos y ejemplos aplicados al Sistema de Turnos Médicos. PR: pendiente - @nachonervi-design (Especialista en Patrones Creacionales) PR: [#133](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/133)
 
+- [feature/esp-patron-comportamiento-add-observer] Se aplicó el patrón Observer al Sistema de Turnos Médicos para mejorar el rendimiento. PR: [#142](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/142) - @eternalnight04 (Especialista en Patrón de Diseño de Comportamiento)
+
+### Fixed
+
+- [fix/coordinador-devops.md] Implementación de ia/segundo-parcial/coordinador-devops.md, pasada por alto. PR: [#149](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/149) - @britezacostaalexis-pixel(Coordinador y Devops)
+
+- [fix/add-docs-ia-patron-builder] Agregada documentación del proceso IA para patrón Builder y principios SOLID (`ia/segundo-parcial/especialista-patron-creacional.md`). PR: [#150](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/150) - @nachonervi-design (Especialista en Patrones Creacionales)
+
+- [fix/nachonervi-reescribir-docs-creacional] Se reescribió el anexo del patrón Builder con formato académico y estructura del parcial. PR: [#153](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/153) - @nachonervi-design (Especialista en Patrones Creacionales)
 
 ## [Released - Actividad Obligatoria N°4] - 2026-06-18
 

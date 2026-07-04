@@ -16,7 +16,7 @@ La aplicación de patrones estructurales permite construir sistemas más organiz
 
 ---
 
-## Propósito y Tipo del Patrón
+## Propósito y Tipo de Patrón
 
 El patrón **Facade** pertenece a la categoría de patrones estructurales y tiene como objetivo proporcionar una interfaz simplificada para interactuar con un conjunto complejo de clases o subsistemas.
 
@@ -70,7 +70,7 @@ De esta manera, las clases externas no necesitan conocer la lógica interna de c
 
 ---
 
-# 5. Estructura de Clases
+# Estructura de Clases
 
 El diseño propuesto se representa mediante el siguiente diagrama:
 
@@ -86,19 +86,17 @@ Esta clase funciona como punto único de acceso para las operaciones relacionada
 
 ---
 
-# 6. Justificación Técnica de la Estructura de Clases
+# Justificación Técnica de la Estructura de Clases
 
-La implementación del patrón Facade mejora la arquitectura del sistema debido a que:
+Se aplicó el patrón de diseño estructural **Facade** para simplificar la interacción con los distintos componentes del sistema involucrados en la gestión de turnos. Antes de la implementación, las clases clientes debían comunicarse directamente con varias clases del subsistema, generando un mayor acoplamiento y haciendo más compleja la lógica de utilización.
 
-- Reduce el acoplamiento entre los actores externos y los subsistemas internos.
-- Centraliza la lógica de coordinación de operaciones complejas.
-- Facilita futuras modificaciones del sistema.
-- Mejora la legibilidad del código al ocultar detalles innecesarios.
-- Favorece la aplicación de principios SOLID.
+La solución incorpora una clase **Facade**, que actúa como punto único de acceso para las operaciones relacionadas con la gestión de turnos. De esta manera, las clases clientes únicamente interactúan con la fachada, sin conocer el funcionamiento interno del subsistema.
 
-La solución respeta el principio **SRP (Single Responsibility Principle)** porque la clase Facade tiene como responsabilidad coordinar operaciones relacionadas con turnos, mientras que cada subsistema mantiene sus propias responsabilidades.
+En el diagrama de clases puede observarse que:
 
-- Facade reduce el acoplamiento entre clientes y subsistemas al ofrecer una interfaz única.
-- Para favorecer DIP en la implementación, la fachada debería depender de abstracciones (interfaces) en lugar de clases concretas.
+- La clase **Facade** mantiene referencias a las clases del subsistema encargadas de las distintas responsabilidades.
+- Cuando el cliente solicita una operación, la **Facade** coordina las llamadas necesarias a cada una de esas clases.
+- Cada clase del subsistema continúa siendo responsable de su propia funcionalidad, respetando el principio de responsabilidad única (SRP).
+- El cliente deja de depender de múltiples clases concretas y pasa a depender únicamente de la fachada, reduciendo el acoplamiento y facilitando el mantenimiento del sistema.
 
-Por estos motivos, el patrón Facade resulta adecuado para mejorar la organización, mantenimiento y evolución del sistema de turnos médicos.
+Esta organización permite ocultar la complejidad interna del subsistema, centralizar la lógica de coordinación y facilitar futuras modificaciones, ya que los cambios internos pueden realizarse sin afectar a las clases clientes siempre que la interfaz de la fachada permanezca estable.

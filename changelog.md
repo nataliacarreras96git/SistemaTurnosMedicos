@@ -4,11 +4,11 @@
 
 ### Added
 
-- [feature/anexo-fundamentos-doo] Se agrega el anexo del examen final sobre abstracción, encapsulamiento, herencia y polimorfismo, con evidencia UML, pseudocódigo del diseño y relación con SOLID y los patrones Builder, Facade y Observer.
+- [feature/anexo-fundamentos-doo] Se agrega el anexo del examen final sobre abstracción, encapsulamiento, herencia y polimorfismo, con evidencia UML, pseudocódigo del diseño y relación con SOLID y los patrones Builder, Facade y Observer. PR: [#161](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/161) - @nachonervi-design
 
 ### Changed
 
-- [feature/anexo-fundamentos-doo] Se actualizan los índices de navegación de `README.md` y `anexos/anexos.md` para incorporar el nuevo anexo.
+- [feature/anexo-fundamentos-doo] Se actualizan los índices de navegación de `README.md` y `anexos/anexos.md` para incorporar el nuevo anexo. PR: [#161](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/161) - @nachonervi-design
 
 ## [Released - Segundo Parcial] - 2026-06-27
 

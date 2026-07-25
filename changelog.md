@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- [feature/anexo-fundamentos-doo] Se agrega el anexo del examen final sobre abstracción, encapsulamiento, herencia y polimorfismo, con evidencia UML, pseudocódigo del diseño y relación con SOLID y los patrones Builder, Facade y Observer.
+
+### Changed
+
+- [feature/anexo-fundamentos-doo] Se actualizan los índices de navegación de `README.md` y `anexos/anexos.md` para incorporar el nuevo anexo.
+
 ## [Released - Segundo Parcial] - 2026-06-27
 
 ### Added

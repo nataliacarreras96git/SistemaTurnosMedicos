@@ -42,7 +42,7 @@ Los roles para la Actividad Obligatoria N°4 están reflejados en la columna `Ro
 ## Navegación mínima
 
 - Anexos (introducción y contexto): [anexos/anexos.md](./anexos/anexos.md)
-- Fundamentos de Diseño Orientado a Objetos: [fundamentos-doo.md](./anexos/fundamentos-doo/fundamentos-doo.md)
+- Fundamentos de Diseño Orientado a Objetos — Mesa N.° 645002, matrícula 155675: [fundamentos-doo.md](./anexos/fundamentos-doo-mesa-645002-matricula-155675/fundamentos-doo.md)
 - Analisis Funcional de Casos de Uso: [analisis-funcional/](./anexos/analisis-funcional/analisis_casos_uso.md)
 - Diagramas de Clases de Casos de Uso: [diagramas_de_clases.md](./diagramas/01-diagrama-clases/diagramas_de_clases.md)
 - Índice de Diagramas UML actualizado: [diagramas/diagramasUML.md](./diagramas/diagramasUML.md)

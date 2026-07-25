@@ -10,7 +10,7 @@ El polimorfismo permite utilizar objetos de distintos tipos mediante una misma a
 
 Observer define `iNotificacion.actualizar()`. `NotificacionMedio` y `Auditoria` implementan ese contrato, aunque reaccionan de maneras diferentes.
 
-![Contrato polimórfico iNotificacion del patrón Observer](../../diagramas/01-diagrama-clases/01-patron-comportamiento-observer.png)
+![Contrato polimórfico iNotificacion del patrón Observer](./images/observer-notificaciones.png)
 
 ```text
 interface iNotificacion
@@ -40,7 +40,7 @@ end
 
 ## Ejemplo 2: usuarios tratados por la clase base
 
-![Método genérico para UsuarioDelSistema](../../diagramas/01-diagrama-clases/capturas-pilares/poo-polimorfismo-ejemplo-2.png)
+![Método genérico para UsuarioDelSistema](./images/polimorfismo-usuarios.png)
 
 ```text
 method procesarActualizacion(usuario: UsuarioDelSistema)

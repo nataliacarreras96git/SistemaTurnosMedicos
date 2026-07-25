@@ -10,7 +10,7 @@ La abstracción consiste en representar un concepto mediante sus característica
 
 `UsuarioDelSistema` es una clase abstracta que concentra los datos y operaciones comunes de los usuarios. No representa un actor concreto que deba instanciarse; sirve como modelo general para `Paciente`, `Medico` y `Secretaria`.
 
-![Clase abstracta UsuarioDelSistema](../../diagramas/01-diagrama-clases/capturas-pilares/poo-abstraccion-ejemplo-1.png)
+![Clase abstracta UsuarioDelSistema](./images/abstraccion-usuario-del-sistema.png)
 
 ```text
 abstract class UsuarioDelSistema
@@ -29,7 +29,7 @@ El fragmento expone únicamente las operaciones necesarias para autenticar y act
 
 La clase `Turno` ofrece una operación simple para solicitar un cambio de estado. Quien la invoca no necesita conocer las reglas que validan una transición.
 
-![Método cambiarEstado de Turno](../../diagramas/01-diagrama-clases/capturas-pilares/poo-abstraccion-ejemplo-2.png)
+![Método cambiarEstado de Turno](./images/abstraccion-cambiar-estado.png)
 
 ```text
 method Turno.cambiarEstado(nuevoEstado)

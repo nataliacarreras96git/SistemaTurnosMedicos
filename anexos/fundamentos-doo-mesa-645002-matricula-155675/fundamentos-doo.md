@@ -26,7 +26,7 @@ Cada documento incluye una explicación teórica, evidencia UML del repositorio,
 
 El [diagrama de clases final](../../diagramas/01-diagrama-clases/06-clases-diagrama-final.png) muestra las entidades centrales y la jerarquía de usuarios. Los diagramas de [Builder](../../diagramas/01-diagrama-clases/01-patron-creacional-builder.png), [Facade](../../diagramas/01-diagrama-clases/01-patron-estructural-facade.png) y [Observer](../../diagramas/01-diagrama-clases/01-patron-comportamiento-observer.png) muestran cómo los fundamentos se combinan con patrones y principios SOLID.
 
-![Diagrama de clases final del Sistema de Turnos Médicos](../../diagramas/01-diagrama-clases/06-clases-diagrama-final.png)
+![Diagrama de clases final del Sistema de Turnos Médicos](./images/diagrama-clases-final.png)
 
 ## Conclusión
 

@@ -10,7 +10,7 @@ El encapsulamiento agrupa el estado y el comportamiento de un objeto y restringe
 
 `Turno` mantiene privados `horaRealLlegada`, `presente` y `diferenciaMinutos`. Estos valores están relacionados y deben actualizarse de manera consistente mediante `registrarLlegada()`.
 
-![Atributos encapsulados de la llegada](../../diagramas/01-diagrama-clases/capturas-pilares/poo-encapsulamiento-ejemplo-1.png)
+![Atributos encapsulados de la llegada](./images/encapsulamiento-llegada.png)
 
 ```text
 class Turno
@@ -32,7 +32,7 @@ No se permite marcar `presente = true` sin registrar la hora ni calcular la dife
 
 ## Ejemplo 2: contraseña de `UsuarioDelSistema`
 
-![Contraseña privada de UsuarioDelSistema](../../diagramas/01-diagrama-clases/capturas-pilares/poo-encapsulamiento-ejemplo-2.png)
+![Contraseña privada de UsuarioDelSistema](./images/encapsulamiento-contrasena.png)
 
 ```text
 class UsuarioDelSistema

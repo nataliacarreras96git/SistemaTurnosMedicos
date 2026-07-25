@@ -10,7 +10,7 @@ La herencia permite definir una clase especializada a partir de una clase genera
 
 `Paciente`, `Medico` y `Secretaria` son tipos de `UsuarioDelSistema`. Heredan datos comunes y operaciones como `autenticar()` y `actualizarDatos()`.
 
-![Jerarquía de usuarios](../../diagramas/01-diagrama-clases/capturas-pilares/poo-herencia-ejemplo-1.png)
+![Jerarquía de usuarios](./images/herencia-usuarios.png)
 
 ```text
 abstract class UsuarioDelSistema
@@ -41,7 +41,7 @@ Las subclases no repiten la estructura común y agregan responsabilidades cohere
 
 En Observer, `NotificacionEmail` y `NotificacionWhatsapp` heredan de `NotificacionMedio`.
 
-![Herencia entre NotificacionMedio y los medios concretos](../../diagramas/01-diagrama-clases/01-patron-comportamiento-observer.png)
+![Herencia entre NotificacionMedio y los medios concretos](./images/observer-notificaciones.png)
 
 ```text
 abstract class NotificacionMedio implements iNotificacion

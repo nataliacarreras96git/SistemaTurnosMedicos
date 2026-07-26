@@ -4,7 +4,17 @@
 
 ### Added
 
+
 - [feature/anexo-fundamentos-doo] Se agrega la documentación de los fundamentos del Diseño Orientado a Objetos: abstracción, encapsulamiento, herencia y polimorfismo, incluyendo ejemplos del proyecto, pseudocódigo y diagramas UML. Se actualizan los índices de navegación de `README.md` y `anexos/anexos.md`. PR: [#161](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/161) - @nachonervi-design
+
+- [feature/anexo-fundamentos-doo-2] Se creó la carpeta de fundamentos doo y dentro de ella, se crearon archivos que explican la abstracción, el encapsulamiento, la herencia, el polimorfismo y cómo se manifiestan en el proyecto. Al mismo tiempo que incluye un índice de fundamentos doo para navegar entre estos archivos. PR: [#162](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/162) - @eternalnight04
+
+### Fixed
+
+- [feature/anexo-fundamentos-doo-2] Se crearon archivos puml y png para complementar los archivos de encapsulamiento y herencia. También se modificó el archivo de encapsulamiento, aclarando la relación entre LlegadaPaciente, Secretaria y Turno para que tenga más sentido con el fundamento. PR: [#162](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/162) - @eternalnight04
+
+- [feature/anexo-fundamentos-doo-2] Se corrigieron diagramas de clases para que no tengan ID y se corrigió el link al diagrama de encapsulamiento. PR: [#162](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/162) - @eternalnight04
+
 
 ## [Released - Segundo Parcial] - 2026-06-27
 

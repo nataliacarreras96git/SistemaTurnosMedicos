@@ -1,0 +1,48 @@
+@startuml doo-encapsulamiento
+title Diagrama de Clase - Encapsulamiento Ejemplo
+
+class Secretaria {
+  - legajo: String
+  --
+  + buscarPaciente(paciente: Paciente): Paciente
+  + seleccionarProfesional(medico: Medico): Medico
+  + validarDisponibilidad(fecha: LocalDate, hora: LocalTime): Boolean
+  + registrarTurno(paciente: Paciente, medico: Medico, fecha: LocalDate, hora: LocalTime): Turno
+  + darAltaPaciente(paciente: Paciente): void
+  + darBajaPaciente(paciente: Paciente): void
+  + consultarAgendaMedica(medico: Medico): Agenda
+  + registrarLlegada(paciente: Paciente, turno: Turno): LlegadaPaciente
+  + actualizarEstadoTurno(turno: Turno, estado: EstadoTurno): void
+}
+
+class Turno {
+  - fechaHoraProgramada: DateTime
+  - paciente: Paciente
+  - medico: Medico
+  - estado: TurnoEstado
+  - sobreturno: boolean
+  - horaRealLlegada: DateTime
+  - presente: boolean
+  - diferenciaMinutos: int
+
+  - historial: List<String>
+  + Turno(fechaHora, paciente, medico, sobreturno)
+  + cambiarEstado(nuevoEstado): void
+  + reprogramar(nuevaFechaHora): void
+  + cancelar(motivo, usuario): void
+  - calcularDiferencia(horaReal): int
+  + estaPresente(): boolean
+  + registrarLlegada(horaReal): void
+}
+
+class LlegadaPaciente {
+    -horaLlegada: LocalTime
+    
+    +registrar(horaReal: LocalTime): void
+}
+
+LlegadaPaciente "1" o-- "1" Turno
+Secretaria "1 " --o "..*" LlegadaPaciente
+
+
+@enduml

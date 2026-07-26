@@ -12,7 +12,7 @@ Relación con SOLID y patrones de diseño:
 
 ## Ejemplo en el proyecto
 
-![Abstracción en el proyecto](../../diagramas/01-diagrama-clases/capturas-pilares/poo-abstraccion-ejemplo-1.png)
+![Abstracción en el proyecto](./doo-abstraccion.png)
 
 En este diagrama se observa la clase abstracta `UsuarioDelSistema` que agrupa atributos y métodos comunes a `Paciente`, `Medico` y `Secretaria`. Estas subclases concretas extienden la abstracción básica con comportamientos específicos del rol, mientras que el resto del sistema puede trabajar con el tipo general `UsuarioDelSistema`.
 
@@ -65,4 +65,3 @@ public class Paciente extends UsuarioDelSistema {
 Justificación técnica:
 - El ejemplo de `UsuarioDelSistema` muestra una abstracción explícita: define la estructura y el comportamiento común a todos los usuarios sin proporcionar una implementación completa para `actualizarDatos()`.
 - `Paciente` hereda esa abstracción y ofrece una implementación concreta, lo que permite que el sistema manipule distintos tipos de usuario mediante el mismo tipo base.
-- El método `cambiarEstado` de `Turno` abstrae la operación de cambio de estado y encapsula las reglas de negocio de validación dentro de la propia clase.

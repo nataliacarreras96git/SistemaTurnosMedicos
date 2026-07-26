@@ -1,0 +1,63 @@
+@startuml doo-abstraccion
+
+title Diagrama de Clases - Abstracción Ejemplo
+
+abstract class UsuarioDelSistema {
+  # nombre: String
+  # email: String
+  # telefono: String
+  - contrasena: String
+  --
+  + autenticar(password): Boolean
+  + actualizarDatos(): void
+}
+
+class Paciente {
+  - dni: String
+  - domicilio: String
+  --
+  + solicitarTurno(fecha: LocalDate, motivo: String): void
+  + confirmarTurno(): void
+  + cancelarTurno(): void
+  + recibirNotificacion(mensaje: String): Boolean
+}
+
+class Secretaria {
+  - legajo: String
+  --
+  + buscarPaciente(paciente: Paciente): Paciente
+  + seleccionarProfesional(medico: Medico): Medico
+  + validarDisponibilidad(fecha: LocalDate, hora: LocalTime): Boolean
+  + registrarTurno(paciente: Paciente, medico: Medico, fecha: LocalDate, hora: LocalTime): Turno
+  + darAltaPaciente(paciente: Paciente): void
+  + darBajaPaciente(paciente: Paciente): void
+  + consultarAgendaMedica(medico: Medico): Agenda
+}
+
+class Medico {
+  - matricula: String
+  - especialidad: String
+  --
+  + consultarAgenda(): List<Turno>
+  + atenderPaciente(turno: Turno): void
+  + registrarObservaciones(turno: Turno, observaciones: String): void
+  + modificarDisponibilidad(inicio: LocalDateTime, fin: LocalDateTime): void
+}
+
+UsuarioDelSistema <|-- Paciente : hereda
+UsuarioDelSistema <|-- Secretaria : hereda
+UsuarioDelSistema <|-- Medico : hereda
+
+note right of UsuarioDelSistema
+    La clase UsuarioDelSistema es abstracta
+    y define los atributos y métodos comunes 
+    para todos los usuarios del sistema, como 
+    nombre, email, teléfono y autenticación. 
+    Las clases Paciente, Secretaria y Medico 
+    heredan de esta clase abstracta, lo que 
+    permite compartir la funcionalidad común 
+    y garantizar que cada tipo de usuario 
+    tenga su propia implementación 
+    específica de los métodos definidos en 
+    la clase abstracta.
+end note

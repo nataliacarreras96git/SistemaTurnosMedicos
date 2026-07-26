@@ -10,6 +10,7 @@
 
 - [feature/anexo-fundamentos-doo-2] Se crearon archivos puml y png para complementar los archivos de encapsulamiento y herencia. También se modificó el archivo de encapsulamiento, aclarando la relación entre LlegadaPaciente, Secretaria y Turno para que tenga más sentido con el fundamento. PR: [#162](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/162) - @eternalnight04
 
+- [feature/anexo-fundamentos-doo-2] Se corrigieron diagramas de clases para que no tengan ID y se corrigió el link al diagrama de encapsulamiento. PR: [#162](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/162) - @eternalnight04
 
 
 ## [Released - Segundo Parcial] - 2026-06-27

@@ -1,16 +1,20 @@
 # Encapsulamiento
 
-[Volver al índice de fundamentos](./fundamentos-doo.md)
+El encapsulamiento es uno de los pilares del Diseño Orientado a Objetos y consiste en proteger el estado interno de un objeto y permitir su modificación únicamente mediante operaciones controladas. Evita que otras partes del sistema alteren directamente los atributos y ayuda a conservar las reglas del dominio. En el Sistema de Turnos Médicos protege información como el estado, la llegada del paciente y las credenciales de los usuarios. Se relaciona con el principio de responsabilidad única (SRP), ya que cada clase administra su propio estado, y reduce el acoplamiento al impedir que otros componentes dependan de su representación interna. También aparece en los patrones aplicados: Builder controla la creación de `Turno`, Facade encapsula la coordinación de subsistemas y Observer protege la colección de observadores y sus operaciones de suscripción.
 
-## Explicación teórica
+## Ejemplo en el proyecto
 
-El encapsulamiento agrupa el estado y el comportamiento de un objeto y restringe el acceso directo a sus datos. Los atributos se mantienen privados y se modifican mediante operaciones controladas que preservan las reglas del dominio.
-
-## Ejemplo 1: registro de llegada en `Turno`
-
-`Turno` mantiene privados `horaRealLlegada`, `presente` y `diferenciaMinutos`. Estos valores están relacionados y deben actualizarse de manera consistente mediante `registrarLlegada()`.
+El encapsulamiento se evidencia en `Turno`, que mantiene privados `horaRealLlegada`, `presente` y `diferenciaMinutos`. Estos valores están relacionados y se actualizan de manera consistente mediante `registrarLlegada()`. También se observa en `UsuarioDelSistema`, cuya contraseña es privada y solo puede verificarse mediante `autenticar()`.
 
 ![Atributos encapsulados de la llegada](./images/encapsulamiento-llegada.png)
+
+**Figura 3.** Atributos privados de `Turno` relacionados con el registro de llegada del paciente.
+
+![Contraseña privada de UsuarioDelSistema](./images/encapsulamiento-contrasena.png)
+
+**Figura 4.** La contraseña de `UsuarioDelSistema` se mantiene privada y se utiliza mediante una operación pública controlada.
+
+## Ejemplo de código
 
 ```text
 class Turno
@@ -26,15 +30,7 @@ class Turno
         cambiarEstado(PRESENTE)
     end
 end
-```
 
-No se permite marcar `presente = true` sin registrar la hora ni calcular la diferencia. La operación mantiene los datos sincronizados y protege una invariante del turno.
-
-## Ejemplo 2: contraseña de `UsuarioDelSistema`
-
-![Contraseña privada de UsuarioDelSistema](./images/encapsulamiento-contrasena.png)
-
-```text
 class UsuarioDelSistema
     private contrasena
 
@@ -44,20 +40,4 @@ class UsuarioDelSistema
 end
 ```
 
-El llamador obtiene un resultado booleano, pero no puede leer ni modificar directamente la credencial almacenada.
-
-## Relación con SOLID
-
-- **SRP:** `Turno` conserva las reglas propias de su estado.
-- **OCP:** las operaciones públicas permiten cambiar la implementación interna sin afectar a sus clientes.
-- **DIP:** otros componentes no dependen de la representación concreta de los atributos.
-
-## Relación con los patrones
-
-- **Builder:** el constructor privado y el `Builder` controlan la creación de `Turno`.
-- **Facade:** encapsula la coordinación de varios subsistemas.
-- **Observer:** `Sujeto` encapsula la colección de observadores y las operaciones de suscripción.
-
-## Síntesis
-
-La visibilidad privada y los métodos de negocio permiten que `Turno` y `UsuarioDelSistema` protejan su consistencia y expongan solo las operaciones necesarias.
+Este pseudocódigo, derivado del diseño UML, demuestra encapsulamiento porque los atributos no pueden modificarse directamente desde el exterior. `registrarLlegada()` actualiza en conjunto todos los datos vinculados con la llegada y preserva su consistencia, mientras que `autenticar()` permite validar una contraseña sin exponer la credencial almacenada.

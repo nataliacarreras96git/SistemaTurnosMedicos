@@ -1,16 +1,20 @@
 # Herencia
 
-[Volver al índice de fundamentos](./fundamentos-doo.md)
+La herencia es uno de los pilares del Diseño Orientado a Objetos y permite crear clases especializadas a partir de una clase general. Las subclases reciben atributos y operaciones comunes y agregan las características propias de su función. Su aplicación evita duplicaciones y debe representar una relación válida de tipo “es un”. En el Sistema de Turnos Médicos permite organizar los distintos usuarios dentro de una jerarquía coherente. Se relaciona con el principio abierto/cerrado (OCP), porque pueden incorporarse nuevas especializaciones sin modificar la clase base, y con el principio de sustitución de Liskov (LSP), porque cada subtipo debe poder utilizarse donde se espera el tipo general. En Observer también permite especializar medios de notificación a partir de una base común; Builder y Facade, en cambio, utilizan composición para relaciones que no representan una especialización.
 
-## Explicación teórica
+## Ejemplo en el proyecto
 
-La herencia permite definir una clase especializada a partir de una clase general. La subclase recibe atributos y operaciones comunes y agrega el comportamiento propio de su rol. Debe expresar una relación válida de tipo “es un”.
-
-## Ejemplo 1: jerarquía de usuarios
-
-`Paciente`, `Medico` y `Secretaria` son tipos de `UsuarioDelSistema`. Heredan datos comunes y operaciones como `autenticar()` y `actualizarDatos()`.
+`Paciente`, `Medico` y `Secretaria` son especializaciones de `UsuarioDelSistema`. Heredan datos y operaciones comunes como `nombre`, `email`, `autenticar()` y `actualizarDatos()`, y agregan responsabilidades específicas de cada actor. El patrón Observer presenta otra jerarquía: `NotificacionEmail` y `NotificacionWhatsapp` especializan `NotificacionMedio`.
 
 ![Jerarquía de usuarios](./images/herencia-usuarios.png)
+
+**Figura 5.** Relación de herencia entre `UsuarioDelSistema` y los actores concretos del sistema.
+
+![Herencia entre NotificacionMedio y los medios concretos](./images/observer-notificaciones.png)
+
+**Figura 6.** Especialización de `NotificacionMedio` mediante diferentes canales de notificación.
+
+## Ejemplo de código
 
 ```text
 abstract class UsuarioDelSistema
@@ -33,17 +37,7 @@ class Secretaria extends UsuarioDelSistema
     private secretariaId
     public reprogramarTurno(turno, fecha): boolean
 end
-```
 
-Las subclases no repiten la estructura común y agregan responsabilidades coherentes. Existe una generalización explícita en UML y una relación semántica válida: cada una también es un usuario del sistema.
-
-## Ejemplo 2: medios de notificación
-
-En Observer, `NotificacionEmail` y `NotificacionWhatsapp` heredan de `NotificacionMedio`.
-
-![Herencia entre NotificacionMedio y los medios concretos](./images/observer-notificaciones.png)
-
-```text
 abstract class NotificacionMedio implements iNotificacion
     private mensaje
     public actualizar(): void
@@ -59,20 +53,4 @@ class NotificacionWhatsapp extends NotificacionMedio
 end
 ```
 
-La superclase evita repetir la preparación del mensaje y cada subclase conserva los datos particulares de su canal.
-
-## Relación con SOLID
-
-- **SRP:** la clase base contiene lo común; las responsabilidades particulares quedan en las subclases.
-- **OCP:** se puede agregar `Administrador` u otro medio mediante extensión.
-- **LSP:** cada subtipo debe respetar el contrato de su superclase.
-
-## Relación con los patrones
-
-- **Observer:** combina herencia e implementación de interfaz para tratar los observadores uniformemente.
-- **Builder:** usa composición, no herencia; la herencia se reserva para relaciones “es un”.
-- **Facade:** también prioriza composición para coordinar servicios.
-
-## Síntesis
-
-La jerarquía evita duplicar rasgos compartidos y permite especializar cada actor. El diseño diferencia correctamente la herencia de las relaciones de composición.
+Este pseudocódigo, derivado del diseño UML, demuestra herencia porque las clases concretas reutilizan la estructura de una clase base y añaden sus propios datos y comportamientos. La jerarquía evita repetir características compartidas y permite incorporar nuevos usuarios o medios de notificación mediante especialización.

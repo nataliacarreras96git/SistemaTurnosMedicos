@@ -1,16 +1,20 @@
 # Polimorfismo
 
-[Volver al índice de fundamentos](./fundamentos-doo.md)
+El polimorfismo es uno de los pilares del Diseño Orientado a Objetos y permite que objetos de distintos tipos respondan al mismo mensaje de acuerdo con su propia implementación. El código cliente trabaja con un contrato común sin depender de cada clase concreta, lo que aumenta la flexibilidad y reduce el acoplamiento. En el Sistema de Turnos Médicos permite tratar uniformemente diferentes observadores y usuarios. Se relaciona con el principio abierto/cerrado (OCP), porque admite nuevas implementaciones sin modificar el código cliente; con LSP, porque los subtipos deben sustituir correctamente a su abstracción; con ISP, porque utiliza contratos pequeños; y con DIP, porque el sistema depende de interfaces. Su aplicación principal aparece en Observer, donde diferentes observadores reciben `actualizar()`. Facade puede colaborar con implementaciones intercambiables, mientras que Builder mantiene una interfaz uniforme de construcción.
 
-## Explicación teórica
+## Ejemplo en el proyecto
 
-El polimorfismo permite utilizar objetos de distintos tipos mediante una misma abstracción. El código cliente invoca una operación común y el comportamiento concreto se determina según el objeto que recibe el mensaje.
-
-## Ejemplo 1: contrato `iNotificacion`
-
-Observer define `iNotificacion.actualizar()`. `NotificacionMedio` y `Auditoria` implementan ese contrato, aunque reaccionan de maneras diferentes.
+El ejemplo principal se encuentra en el patrón Observer. La interfaz `iNotificacion` define el contrato `actualizar()`, implementado por `NotificacionMedio` y `Auditoria`. Cada objeto responde de forma diferente: uno envía una notificación y el otro registra un evento. `Sujeto` puede recorrer una colección de `iNotificacion` e invocar el mismo método sin conocer el tipo concreto. La jerarquía de `UsuarioDelSistema` también permite recibir `Paciente`, `Medico` o `Secretaria` mediante el tipo general.
 
 ![Contrato polimórfico iNotificacion del patrón Observer](./images/observer-notificaciones.png)
+
+**Figura 7.** Aplicación del polimorfismo mediante el contrato `iNotificacion` del patrón Observer.
+
+![Método genérico para UsuarioDelSistema](./images/polimorfismo-usuarios.png)
+
+**Figura 8.** Distintos usuarios pueden tratarse mediante el tipo general `UsuarioDelSistema`.
+
+## Ejemplo de código
 
 ```text
 interface iNotificacion
@@ -34,15 +38,7 @@ method Sujeto.notificar()
         observador.actualizar()
     end
 end
-```
 
-`Sujeto` no pregunta qué tipo concreto tiene el observador. Solo conoce el contrato; cada objeto responde con su propia implementación.
-
-## Ejemplo 2: usuarios tratados por la clase base
-
-![Método genérico para UsuarioDelSistema](./images/polimorfismo-usuarios.png)
-
-```text
 method procesarActualizacion(usuario: UsuarioDelSistema)
     usuario.actualizarDatos()
 end
@@ -52,21 +48,4 @@ procesarActualizacion(medico)
 procesarActualizacion(secretaria)
 ```
 
-El llamador depende del tipo general y no necesita condiciones para cada actor, siempre que todos respeten el contrato.
-
-## Relación con SOLID
-
-- **OCP:** se agregan observadores sin cambiar el ciclo de notificación.
-- **LSP:** cualquier subtipo válido puede reemplazar a su abstracción.
-- **ISP:** `iNotificacion` ofrece un contrato pequeño.
-- **DIP:** `Sujeto` depende de `iNotificacion`, no de clases concretas.
-
-## Relación con los patrones
-
-- **Observer:** todos los observadores reciben `actualizar()` mediante la misma interfaz.
-- **Builder:** mantiene una interfaz uniforme de construcción, aunque su objetivo central no es el despacho polimórfico.
-- **Facade:** permite reemplazar colaboradores por implementaciones compatibles sin afectar al cliente.
-
-## Síntesis
-
-El ejemplo más claro se encuentra en Observer: una colección de `iNotificacion` admite comportamientos diferentes bajo el mismo contrato.
+Este pseudocódigo, derivado del diseño UML, demuestra polimorfismo porque el sistema invoca `actualizar()` sobre el contrato `iNotificacion` y cada implementación ejecuta su propia respuesta. También permite procesar diferentes actores mediante `UsuarioDelSistema`, evitando condiciones específicas para cada tipo concreto.

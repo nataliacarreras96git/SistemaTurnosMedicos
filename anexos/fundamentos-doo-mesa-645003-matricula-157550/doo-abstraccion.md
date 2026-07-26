@@ -16,12 +16,9 @@ Relación con SOLID y patrones de diseño:
 
 En este diagrama se observa la clase abstracta `UsuarioDelSistema` que agrupa atributos y métodos comunes a `Paciente`, `Medico` y `Secretaria`. Estas subclases concretas extienden la abstracción básica con comportamientos específicos del rol, mientras que el resto del sistema puede trabajar con el tipo general `UsuarioDelSistema`.
 
-Otro elemento abstraído en el proyecto es la gestión del estado del turno a través de un método como `cambiarEstado(nuevoEstado)`. La clase `Turno` expone un contrato para modificar su estado, pero encapsula internamente las reglas de transición válidas (por ejemplo, no permitir pasar de `CANCELADO` a `REALIZADO`).
-
 Justificación técnica:
 - `UsuarioDelSistema` actúa como una abstracción de nivel superior que define la interfaz común de usuarios y oculta detalles específicos de cada tipo de usuario.
 - Las subclases `Paciente`, `Medico` y `Secretaria` implementan esta abstracción con sus propias propiedades y responsabilidades, cumpliendo LSP y facilitando nuevas extensiones.
-- El método `cambiarEstado` en `Turno` mantiene la abstracción de la operación de cambio de estado, de modo que los usuarios del objeto no necesitan conocer la lógica interna de validación.
 
 ## Ejemplo de código
 
@@ -63,17 +60,6 @@ public class Paciente extends UsuarioDelSistema {
     }
 }
 
-public class Turno {
-    private TurnoEstado estado;
-
-    public void cambiarEstado(TurnoEstado nuevoEstado) {
-        if (estado.esTransicionValida(nuevoEstado)) {
-            this.estado = nuevoEstado;
-        } else {
-            throw new IllegalStateException("Transición de estado inválida");
-        }
-    }
-}
 ```
 
 Justificación técnica:

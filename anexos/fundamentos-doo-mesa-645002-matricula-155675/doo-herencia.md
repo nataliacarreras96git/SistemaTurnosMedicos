@@ -10,7 +10,7 @@ La herencia es uno de los pilares del Diseño Orientado a Objetos y permite crea
 
 **Figura 5.** Relación de herencia entre `UsuarioDelSistema` y los actores concretos del sistema.
 
-![Herencia entre NotificacionMedio y los medios concretos](./images/observer-notificaciones.png)
+![Herencia entre NotificacionMedio y los medios concretos](./images/herencia-notificaciones.png)
 
 **Figura 6.** Especialización de `NotificacionMedio` mediante diferentes canales de notificación.
 
@@ -24,7 +24,7 @@ abstract class UsuarioDelSistema
 end
 
 class Paciente extends UsuarioDelSistema
-    private historiaClinicaId
+    private historiaClinica
     public solicitarTurno(tipo): void
 end
 
@@ -34,7 +34,6 @@ class Medico extends UsuarioDelSistema
 end
 
 class Secretaria extends UsuarioDelSistema
-    private secretariaId
     public reprogramarTurno(turno, fecha): boolean
 end
 
@@ -53,4 +52,4 @@ class NotificacionWhatsapp extends NotificacionMedio
 end
 ```
 
-Este pseudocódigo, derivado del diseño UML, demuestra herencia porque las clases concretas reutilizan la estructura de una clase base y añaden sus propios datos y comportamientos. La jerarquía evita repetir características compartidas y permite incorporar nuevos usuarios o medios de notificación mediante especialización.
+La herencia se observa explícitamente en las declaraciones `extends`: `Paciente`, `Medico` y `Secretaria` extienden `UsuarioDelSistema`, mientras que `NotificacionEmail` y `NotificacionWhatsapp` extienden `NotificacionMedio`. Cada una de esas declaraciones establece una relación “es un” con su clase base. De este modo, las clases concretas reciben la estructura y las operaciones comunes definidas por la superclase y pueden añadir sus propios datos y comportamientos sin duplicar la definición general.

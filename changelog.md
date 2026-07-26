@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [Examen Final] - 2026-07-26
+
+### Added
+
+- [feature/anexo-fundamentos-doo-2] Se creó la carpeta de fundamentos doo y dentro de ella, se crearon archivos que explican la abstracción, el encapsulamiento, la herencia, el polimorfismo y cómo se manifiestan en el proyecto. Al mismo tiempo que incluye un índice de fundamentos doo para navegar entre estos archivos. PR: [#162](https://github.com/eternalnight04/SistemaTurnosMedicos/pull/162) - @eternalnight04
+
 ## [Released - Segundo Parcial] - 2026-06-27
 
 ### Added

@@ -12,9 +12,9 @@ Relación con SOLID y patrones de diseño:
 
 ## Ejemplo en el proyecto
 
-![Herencia en el proyecto](../../diagramas/01-diagrama-clases/capturas-pilares/poo-herencia-ejemplo-1.png)
+![Herencia en el proyecto](../fundamentos-doo-mesa-645003-matricula-157550/doo-herencia.png)
 
-El diagrama muestra la clase abstracta `UsuarioDelSistema` como superclase de `Paciente`, `Medico` y `Secretaria`. La superclase define los atributos comunes (id, nombre, email, telefono) y métodos compartidos (`autenticar()`, `actualizarDatos()`), mientras que cada subclase concreta incorpora comportamiento y atributos específicos de su rol.
+El diagrama muestra la clase abstracta `UsuarioDelSistema` como superclase de `Paciente`, `Medico` y `Secretaria`. La superclase define los atributos comunes (nombre, email, telefono) y métodos compartidos (`autenticar()`, `actualizarDatos()`), mientras que cada subclase concreta incorpora comportamiento y atributos específicos de su rol.
 
 Esta estructura refleja la herencia porque las clases especializadas extienden la definición general del usuario y reutilizan el código común sin repetirlo. Además, el diseño permite introducir nuevos tipos de usuario sin cambiar las clases existentes, lo que mejora la escalabilidad y mantiene el sistema más mantenible.
 
@@ -28,14 +28,12 @@ Justificación técnica:
 ```
 java
 public abstract class UsuarioDelSistema {
-    protected int id;
     protected String nombre;
     protected String email;
     protected String telefono;
     private String contrasena;
 
-    public UsuarioDelSistema(int id, String nombre, String email, String telefono, String contrasena) {
-        this.id = id;
+    public UsuarioDelSistema(String nombre, String email, String telefono, String contrasena) {
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
@@ -52,8 +50,8 @@ public abstract class UsuarioDelSistema {
 public class Medico extends UsuarioDelSistema {
     private String especialidad;
 
-    public Medico(int id, String nombre, String email, String telefono, String contrasena, String especialidad) {
-        super(id, nombre, email, telefono, contrasena);
+    public Medico(String nombre, String email, String telefono, String contrasena, String especialidad) {
+        super(nombre, email, telefono, contrasena);
         this.especialidad = especialidad;
     }
 

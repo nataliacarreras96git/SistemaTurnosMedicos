@@ -1,0 +1,45 @@
+@startuml doo-herencia
+title Diagrama de Clases - Herencia Ejemplo
+
+' Clases principales
+abstract class UsuarioDelSistema {
+  - nombre: String
+  - dni: String
+  - email: String
+  - telefono: String
+  - contrasena: String
+  + autenticar(password): boolean
+  + actualizarDatos(): void
+}
+
+class Paciente {
+  - historiaClinica: String
+  + solicitarTurno(tipo): void
+  + confirmarTurno(turno): boolean
+  + cancelarTurno(turno): boolean
+  + recibirNotificacion(mensaje): void
+}
+
+class Medico {
+  - matricula: String
+  - especialidad: String
+  - horarioDisponible
+  + consultarAgenda(fecha): void
+  + autorizarSobreturno(solicitud): boolean
+  + registrarObservacion(turno, observacion): void
+  + modificarDisponibilidad(nuevoHorario): void
+}
+
+class Secretaria {
+  - legajo: String
+  + solicitarTurno(paciente, tipo): void
+  + cancelarTurno(turno, motivo): boolean
+  + reprogramarTurno(turno, nuevaFechaHora): boolean
+  + darAltaPaciente(datos): Paciente
+  + consultarAgenda(medico, fecha): void
+}
+
+' Herencia
+Secretaria --|> UsuarioDelSistema
+Paciente --|> UsuarioDelSistema
+Medico --|> UsuarioDelSistema

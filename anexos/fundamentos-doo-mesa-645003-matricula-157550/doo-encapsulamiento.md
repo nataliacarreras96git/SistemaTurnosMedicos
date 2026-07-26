@@ -2,7 +2,7 @@
 
 El encapsulamiento es el principio de ocultar los detalles internos de una clase y exponer solo una interfaz controlada para interactuar con ella. En el diseño orientado a objetos, esto protege el estado del objeto, evita modificaciones directas indebidas y mantiene la invariancia de los datos.
 
-En el proyecto del sistema de turnos médicos, el encapsulamiento ayuda a garantizar que las entidades manejen sus propios datos y reglas de negocio internamente. Por ejemplo, la clase `Secretaria` no modifica directamente los atributos de la clase `Turno`; en su lugar, utiliza la clase `LlegadaPaciente` como intermediaria para registrar la llegada y actualizar el estado del turno.
+En el proyecto del sistema de turnos médicos, el encapsulamiento ayuda a garantizar que las entidades manejen sus propios datos y reglas de negocio internamente.
 
 Relación con SOLID y patrones de diseño:
 - SRP (Single Responsibility Principle): al contener los datos y el comportamiento relacionados en la misma clase, cada entidad asume una única responsabilidad.
@@ -12,7 +12,7 @@ Relación con SOLID y patrones de diseño:
 
 ## Ejemplo en el proyecto
 
-![Encapsulamiento en el proyecto](../../diagramas/01-diagrama-clases/capturas-pilares/poo-encapsulamiento-ejemplo-2.png)
+![Encapsulamiento en el proyecto](./doo-encapsulamiento.png)
 
 El diagrama muestra la clase `Turno` con atributos internos como `horaRealLlegada`, `presente` y `diferenciaMinutos`. Estos atributos no deben ser modificados directamente por otras clases. En el caso de registrar una llegada, la `Secretaria` crea o utiliza un objeto `LlegadaPaciente` y llama a su método `registrar()`.
 

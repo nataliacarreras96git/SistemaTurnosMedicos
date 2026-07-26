@@ -38,11 +38,11 @@ class Turno {
 class LlegadaPaciente {
     -horaLlegada: LocalTime
     
-    +registrar(): void
+    +registrar(horaReal: LocalTime): void
 }
 
-LlegadaPaciente "1" *-- "1" Turno
-Secretaria "1 " --* "..*" LlegadaPaciente
+LlegadaPaciente "1" o-- "1" Turno
+Secretaria "1 " --o "..*" LlegadaPaciente
 
 
 @enduml

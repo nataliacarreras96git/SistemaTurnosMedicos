@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased - Examen Final] - 2026-07-26
+## [Unreleased]
 
 ### Added
 

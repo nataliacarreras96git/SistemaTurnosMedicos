@@ -39,14 +39,11 @@ Los roles para la Actividad Obligatoria N°4 están reflejados en la columna `Ro
 
 ---
 
-## Navegación mínima
+## Diagramas y Diseños
 
-- Anexos (introducción y contexto): [anexos/anexos.md](./anexos/anexos.md)
-- Analisis Funcional de Casos de Uso: [analisis-funcional/](./anexos/analisis-funcional/analisis_casos_uso.md)
-- Diagramas de Clases de Casos de Uso: [diagramas_de_clases.md](./diagramas/01-diagrama-clases/diagramas_de_clases.md)
-- Índice de Diagramas UML actualizado: [diagramas/diagramasUML.md](./diagramas/diagramasUML.md)
-- Documentación uso de IA para esta entrega: [ia/a4/](./ia/segundo-parcial/)
-- Cambios y versiones: [changelog.md](./changelog.md)
+- [Diagramas UML](./diagramas/diagramasUML.md)
+- [Herramientas Agile](./herramientas-agile/herramientas_agile.md)
+- [Anexos](./anexos/anexos.md)
 
 ---
 

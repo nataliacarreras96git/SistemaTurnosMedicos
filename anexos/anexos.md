@@ -7,3 +7,5 @@
 - [Anexo - Principios SOLID](./principios-solid/principios_solid.md)
 - [Anexo - Patrones de Diseño](./patrones-diseno/patrones_diseno.md)
 - [Anexo - Fundamentos del Diseño Orientado a Objetos - Mesa N° 645002 - Ignacio Nervi](./fundamentos-doo-mesa-645002-matricula-155675/fundamentos-doo.md)
+- [Anexo - Fundamentos del Diseño Orientado a Objetos - Mesa Nº 645003 - Milenka Vila](./fundamentos-doo-mesa-645003-matricula-157550/fundamentos-doo.md)
+
